@@ -25,6 +25,10 @@ namespace EducUp.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
+            // Setup Firebase Cloud Firestore
+            Firebase.Core.App.Configure();
+
+
             return base.FinishedLaunching(app, options);
         }
     }
