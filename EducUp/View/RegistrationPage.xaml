@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:vm="clr-namespace:EducUp.ViewModel"
+             mc:Ignorable="d"
+             x:Class="EducUp.View.RegistrationPage">
+    <ContentPage.BindingContext>
+        <vm:RegistrationPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="SectionTitleStyle" TargetType="Label" >
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="HorizontalOptions" Value="Start"/>
+            </Style>
+
+            <Style x:Key="EntryStyle" TargetType="Entry" >
+                <Setter Property="Margin" Value="15,0,15,0" />
+                <Setter Property="FontSize" Value="18" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <ScrollView VerticalScrollBarVisibility="Never">
+            <StackLayout Padding="10" Orientation="Vertical" IsEnabled="{Binding !IsBusy}" >
+                <Label Text="Registrati su EducUp... e fai il primo passo!" TextColor="Black" FontAttributes="Bold" FontSize="25" HorizontalTextAlignment="Center" />
+
+                <!--#region Utente -->
+                <Label Text="Utente" Style="{StaticResource SectionTitleStyle}" />
+                <Entry x:Name="UsernameEntry" Text="{Binding User.Username}" Placeholder="Username*" Style="{StaticResource EntryStyle}"/>
+                <Entry x:Name="PasswordEntry" Placeholder="Password*" IsPassword="True"  Style="{StaticResource EntryStyle}"/>
+                <Entry x:Name="ConfirmPasswordEntry" Placeholder="Conferma password*" IsPassword="True"  Style="{StaticResource EntryStyle}"/>
+                <Grid  Padding="15,0,15,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="AdminCheckBox" Grid.Column="0" IsChecked="{Binding User.IsAdmin}"  Margin="0,0,5,0"/>
+                    <Label Grid.Column="1" Text="Profilo amministratore" FontSize="18" VerticalTextAlignment="Center" Margin="5,0,0,0"/>
+                </Grid>
+                <Entry x:Name="AdminCode" Placeholder="Codice amministratore" Style="{StaticResource EntryStyle}">
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding Source={x:Reference AdminCheckBox}, Path=IsChecked}">
+                            <Setter Property="IsVisible" Value="True"/>
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <!--#endregion-->
+                
+                <!--#region Dati Personali -->
+                <Label Text="Dati personali" Style="{StaticResource SectionTitleStyle}" Margin="0,15,0,0" />
+
+                <Entry x:Name="NameEntry" Text="{Binding User.Name}" Placeholder="Nome*" Style="{StaticResource EntryStyle}"/>
+                <Entry x:Name="SurnameEntry" Text="{Binding User.Surname}" Placeholder="Cognome*" Style="{StaticResource EntryStyle}"/>
+                <Grid Padding="15,0,15,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0,5*" />
+                        <ColumnDefinition Width="0,5*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Text="Data di nascita*" FontSize="18" VerticalTextAlignment="Center" Margin="3,0,0,0" />
+                    <DatePicker x:Name="BirthDatePicker" Grid.Column="1" Date="{Binding User.BirthDate}" FontSize="18" TextColor="Gray" />
+                </Grid>
+                <Entry x:Name="ParishEntry" Text="{Binding User.Parish}" Placeholder="Parrocchia*" Style="{StaticResource EntryStyle}"/>
+                <Entry x:Name="MembershipEntry" Text="{Binding User.Membership}" Placeholder="Codice tessera AC" Style="{StaticResource EntryStyle}"/>
+                <!--#endregion-->
+                                
+                <Button x:Name="RegistrationButton" Text="Registrati" Style="{StaticResource ButtonStyle}" Clicked="RegistrationButton_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

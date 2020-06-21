@@ -32,7 +32,16 @@
 	<string>LaunchScreen</string>
 	<key>CFBundleName</key>
 	<string>EducUp</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+	</dict>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
-</dict>
-</plist>
+	<key>UIAppFonts</key>
+	<array>
+    <string>EducUp.ttf</string>
+	</array>
+	</dict>
+	</plist>

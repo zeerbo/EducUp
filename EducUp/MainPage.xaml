@@ -11,6 +11,11 @@
         <Label Text="Welcome to Xamarin.Forms!" 
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand" />
+        <Button Text="Indietro" >
+            <Button.ImageSource>
+                <FontImageSource  Glyph="A" FontFamily="{OnPlatform Android=EducUp.ttf#, iOS=EducUp}"  Color="White" />
+            </Button.ImageSource>
+        </Button>
     </StackLayout>
 
 </ContentPage>

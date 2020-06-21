@@ -7,5 +7,23 @@
              x:Class="EducUp.App">
     <Application.Resources>
 
+        <OnPlatform x:Key="AppFontIcons" x:TypeArguments="x:String">
+            <On Platform="Android" Value="EducUp.ttf#"/>
+            <On Platform="iOS" Value="EducUp" />
+        </OnPlatform>
+
+        <!--#region Colors -->
+        <Color x:Key="BackgroundColor">#ffe277</Color>
+        <Color x:Key="MainColor">#58b4ae</Color>
+        <!--#endregion-->
+
+        <!--#region Styles -->
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="BackgroundColor" Value="{StaticResource MainColor}" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <!--#endregion-->
+
     </Application.Resources>
 </Application>
