@@ -11,7 +11,7 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <AbsoluteLayout>
+        <AbsoluteLayout IsEnabled="{Binding EnableView}">
             <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" RowSpacing="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0.4*" />
@@ -34,13 +34,19 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" Text="Benvenuto!" TextColor="Black" FontAttributes="Bold" FontSize="30" HorizontalTextAlignment="Center"/>
-                    <Entry x:Name="UsernameEntry" Grid.Row="1" Placeholder="Username" />
+                    <Entry x:Name="EmailEntry" Grid.Row="1" Placeholder="Email" />
                     <Entry x:Name="PasswordEntry" Grid.Row="2" Placeholder="Password" IsPassword="True" />
                     <Button x:Name="LoginButton" Grid.Row="4" Text="Accedi" Style="{StaticResource ButtonStyle}" Clicked="LoginButton_Clicked" />
                 </Grid>
             </Frame>
 
-            <Label AbsoluteLayout.LayoutBounds=".5,.82,1,.1" AbsoluteLayout.LayoutFlags="All" FontSize="18" Text="Non hai un account? Registrati" TextColor="Black" HorizontalTextAlignment="Center" >
+            <Label AbsoluteLayout.LayoutBounds=".5,.82,1,.1" AbsoluteLayout.LayoutFlags="All" FontSize="18" TextColor="Black" HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Non hai un account? " />
+                        <Span Text="Registrati" TextDecorations="Underline" />
+                    </FormattedString>
+                </Label.FormattedText>
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding RegistrationLabelTapped}" />
                 </Label.GestureRecognizers>

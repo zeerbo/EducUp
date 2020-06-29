@@ -42,30 +42,16 @@ namespace EducUp.Model
             }
         }
 
-        private string _username;
-        public string Username
+        private string _email;
+        public string Email
         {
-            get { return _username; }
+            get { return _email; }
             set
             {
-                if (_username != value)
+                if (_email != value)
                 {
-                    _username = value;
-                    OnPropertyChanged(nameof(Username));
-                }
-            }
-        }
-
-        private string _password;
-        public string Password
-        {
-            get { return _password; }
-            set
-            {
-                if (_password != value)
-                {
-                    _password = value;
-                    OnPropertyChanged(nameof(Password));
+                    _email = value;
+                    OnPropertyChanged(nameof(Email));
                 }
             }
         }
@@ -129,14 +115,16 @@ namespace EducUp.Model
         #endregion
 
 
-        public User() { }
+        public User() 
+        {
+            BirthDate = DateTime.Now;
+        }
 
-        public User(string name, string surname, string username, string password, DateTime birthDate, string parish, string membership, bool isAdmin)
+        public User(string name, string surname, string email, DateTime birthDate, string parish, string membership, bool isAdmin)
         {
             Name = name;
             Surname = surname;
-            Username = username;
-            Password = password;
+            Email = email;
             BirthDate = birthDate;
             Parish = parish;
             Membership = membership;

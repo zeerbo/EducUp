@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.CloudFirestore.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -9,6 +10,7 @@ namespace EducUp.ViewModel.Base
     public class ObservableObject : INotifyPropertyChanged
     {
         private bool _isBusy;
+        [Ignored]
         public bool IsBusy
         {
             get => _isBusy;
@@ -18,6 +20,9 @@ namespace EducUp.ViewModel.Base
                 OnPropertyChanged(nameof(IsBusy));
             }
         }
+
+        [Ignored]
+        public bool EnableView => !IsBusy;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

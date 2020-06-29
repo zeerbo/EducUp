@@ -44,7 +44,7 @@ namespace EducUp.Service
             result = true;
             try
             {
-                await _firestore.GetCollection(nameof(User)).GetDocument(user.Username).SetDataAsync(user).ConfigureAwait(false);
+                await _firestore.GetCollection(nameof(User)).GetDocument(user.Email).SetDataAsync(user).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -64,7 +64,7 @@ namespace EducUp.Service
             result = true;
             try
             {
-                await _firestore.GetCollection(nameof(User)).GetDocument(user.Username).UpdateDataAsync(user).ConfigureAwait(false);
+                await _firestore.GetCollection(nameof(User)).GetDocument(user.Email).UpdateDataAsync(user).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -84,7 +84,7 @@ namespace EducUp.Service
             result = true;
             try
             {
-                await _firestore.GetCollection(nameof(User)).GetDocument(user.Username).DeleteDocumentAsync().ConfigureAwait(false);
+                await _firestore.GetCollection(nameof(User)).GetDocument(user.Email).DeleteDocumentAsync().ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -95,15 +95,15 @@ namespace EducUp.Service
             return result;
         }
 
-        public async Task<User> GetUserAsync(string username)
+        public async Task<User> GetUserAsync(string email)
         {
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(email))
                 return null;
 
             User result = null;
             try
             {
-                IDocumentSnapshot documentSnapshot = await _firestore.GetCollection(nameof(User)).GetDocument(username).GetDocumentAsync();
+                IDocumentSnapshot documentSnapshot = await _firestore.GetCollection(nameof(User)).GetDocument(email).GetDocumentAsync();
                 if (documentSnapshot.Exists)
                     result = documentSnapshot.ToObject<User>();
             }

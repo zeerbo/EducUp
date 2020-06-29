@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text;
@@ -28,7 +29,6 @@ namespace EducUp.ViewModel
             }
         }
 
-
         #endregion
 
 
@@ -45,6 +45,12 @@ namespace EducUp.ViewModel
 
         #region Methods
 
+        public async Task<bool> CheckIfUserExists()
+        {
+            bool result = await App.DataService.GetUserAsync(User.Email) != null;
+            return result;
+        }
+
         public bool CheckAdminCode(string adminCode)
         {
             return !string.IsNullOrEmpty(adminCode) && adminCode.Equals(Constants.ADMIN_CODE);
@@ -52,19 +58,41 @@ namespace EducUp.ViewModel
 
         public async Task<bool> RegisterUserAsync(string password)
         {
+            bool resultAuth = false;
             if (string.IsNullOrEmpty(password))
-                return false;
+                return resultAuth;
 
-            //La password viene convertita salvata come Hash
-            string hashPassword = await HashManager.GetHashStringAsync(password).ConfigureAwait(false);
-            if (string.IsNullOrEmpty(hashPassword))
-                return false;
+            bool signIn = await LoginUserAsync(password);
 
-            User.Password = hashPassword;
+            if (!signIn)
+            {
+                // Se il login non va a buon fine provo a registrare l'utente e ad eseguire nuovamente il login
 
-            bool result = await App.DataService.CreateUserAsync(User).ConfigureAwait(false);
+                resultAuth = await App.AuthService.CreateUserWithEmailAndPassword(User.Email, password);
+                resultAuth = resultAuth && await LoginUserAsync(password);
+                resultAuth = resultAuth && await CreateUserAsync();
+            }
+            else
+            {
+                resultAuth = await CreateUserAsync();
+            }
+            
+            if (resultAuth)
+            {
+                App.SaveCredentials(User.Email, password);
+            }
 
-            return result;
+            return resultAuth;
+        }
+
+        public async Task<bool> LoginUserAsync(string password)
+        {
+            return await App.LoginUserAync(User.Email, password);
+        }
+
+        public async Task<bool> CreateUserAsync()
+        {
+            return await App.DataService.CreateUserAsync(User).ConfigureAwait(false);
         }
 
         #endregion

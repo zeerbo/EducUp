@@ -14,7 +14,7 @@ namespace EducUp.Common
         Task<bool> CreateUserAsync(User user);
         Task<bool> UpdateUserAsync(User user);
         Task<bool> DeleteUserAsync(User user);
-        Task<User> GetUserAsync(string username);
+        Task<User> GetUserAsync(string email);
         Task<ObservableCollection<User>> GetUserListAsync();
 
         #endregion

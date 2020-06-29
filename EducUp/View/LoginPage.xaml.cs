@@ -24,7 +24,9 @@ namespace EducUp.View
 
         private async void LoginButton_Clicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(UsernameEntry.Text))
+            _vm.IsBusy = true;
+
+            if (string.IsNullOrEmpty(EmailEntry.Text))
             {
                 await DisplayAlert("Attenzione", "Username errato!", "Ok");
             }
@@ -34,7 +36,7 @@ namespace EducUp.View
             }
             else
             {
-                bool loginSuccess = await _vm.LoginAsync(UsernameEntry.Text, PasswordEntry.Text);
+                bool loginSuccess = await _vm.LoginAsync(EmailEntry.Text, PasswordEntry.Text);
 
                 if (loginSuccess)
                 {
@@ -45,6 +47,8 @@ namespace EducUp.View
                     await DisplayAlert("Attenzione", "Login non andato a buon fine!", "Ok");
                 }
             }
+
+            _vm.IsBusy = false;
         }
     }
 }

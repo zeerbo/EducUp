@@ -8,5 +8,8 @@ namespace EducUp.Utils
     {
         public static readonly string ADMIN_CODE = "AcAdmin";
         public static readonly string ACBO_SITO = "http://www.azionecattolicabo.it/wpac/";
+
+        public const string EMAIL_PREFERENCE = "email";
+        public const string PASSWORD_PREFERENCE = "password";
     }
 }

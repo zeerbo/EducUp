@@ -28,12 +28,12 @@
     
     <ContentPage.Content>
         <ScrollView VerticalScrollBarVisibility="Never">
-            <StackLayout Padding="10" Orientation="Vertical" IsEnabled="{Binding !IsBusy}" >
+            <StackLayout Padding="10" Orientation="Vertical" IsEnabled="{Binding EnableView}" >
                 <Label Text="Registrati su EducUp... e fai il primo passo!" TextColor="Black" FontAttributes="Bold" FontSize="25" HorizontalTextAlignment="Center" />
 
                 <!--#region Utente -->
                 <Label Text="Utente" Style="{StaticResource SectionTitleStyle}" />
-                <Entry x:Name="UsernameEntry" Text="{Binding User.Username}" Placeholder="Username*" Style="{StaticResource EntryStyle}"/>
+                <Entry x:Name="EmailEntry" Text="{Binding User.Email}" Placeholder="Email*" Style="{StaticResource EntryStyle}"/>
                 <Entry x:Name="PasswordEntry" Placeholder="Password*" IsPassword="True"  Style="{StaticResource EntryStyle}"/>
                 <Entry x:Name="ConfirmPasswordEntry" Placeholder="Conferma password*" IsPassword="True"  Style="{StaticResource EntryStyle}"/>
                 <Grid  Padding="15,0,15,0">
@@ -44,9 +44,9 @@
                     <CheckBox x:Name="AdminCheckBox" Grid.Column="0" IsChecked="{Binding User.IsAdmin}"  Margin="0,0,5,0"/>
                     <Label Grid.Column="1" Text="Profilo amministratore" FontSize="18" VerticalTextAlignment="Center" Margin="5,0,0,0"/>
                 </Grid>
-                <Entry x:Name="AdminCode" Placeholder="Codice amministratore" Style="{StaticResource EntryStyle}">
+                <Entry x:Name="AdminCode" Placeholder="Codice amministratore" Style="{StaticResource EntryStyle}" IsVisible="False">
                     <Entry.Triggers>
-                        <DataTrigger TargetType="Entry" Binding="{Binding Source={x:Reference AdminCheckBox}, Path=IsChecked}">
+                        <DataTrigger TargetType="Entry" Binding="{Binding Source={x:Reference AdminCheckBox}, Path=IsChecked}" Value="True">
                             <Setter Property="IsVisible" Value="True"/>
                         </DataTrigger>
                     </Entry.Triggers>

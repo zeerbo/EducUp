@@ -35,18 +35,19 @@ namespace EducUp.ViewModel
 
         #region PublicMethod
 
-        public async Task<bool> LoginAsync(string username, string password)
+        public async Task<bool> LoginAsync(string email, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return false;
 
-            User loggedUser = await App.DataService.GetUserAsync(username).ConfigureAwait(false);
-            if (loggedUser == null)
-                return false;
+            bool result = await App.LoginUserAync(email, password);
 
-            bool passwordCorrect = await HashManager.VerifyHashAsync(password, loggedUser.Password).ConfigureAwait(false);
+            if (result)
+            {
+                App.SaveCredentials(email, password);
+            }
 
-            return passwordCorrect;
+            return result;
         }
 
         #endregion
