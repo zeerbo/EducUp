@@ -27,12 +27,12 @@ namespace EducUp
                 AuthService = FirebaseAuthenticationService.GetInstance(); 
             }
 
-            string username = Preferences.Get(Constants.EMAIL_PREFERENCE, string.Empty);
+            string username = GetUserEmail();
             string password = Preferences.Get(Constants.PASSWORD_PREFERENCE, string.Empty);
 
             if(!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
             {
-                MainPage = new MainPage();
+                MainPage = new AppMasterDetailPage(); ;
             }
             else
             {
@@ -82,6 +82,11 @@ namespace EducUp
             Preferences.Set(Constants.PASSWORD_PREFERENCE, password);
 
             return true;
+        }
+    
+        public static string GetUserEmail()
+        {
+            return Preferences.Get(Constants.EMAIL_PREFERENCE, string.Empty);
         }
     }
 }

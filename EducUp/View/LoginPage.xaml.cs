@@ -40,7 +40,7 @@ namespace EducUp.View
 
                 if (loginSuccess)
                 {
-                    await DisplayAlert("Corretto!", "Login completato!", "Ok");
+                    App.Current.MainPage = new AppMasterDetailPage();
                 }
                 else
                 {

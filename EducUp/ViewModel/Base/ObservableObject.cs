@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Xamarin.Forms;
 
 namespace EducUp.ViewModel.Base
 {
@@ -23,6 +25,36 @@ namespace EducUp.ViewModel.Base
 
         [Ignored]
         public bool EnableView => !IsBusy;
+
+        private string _title;
+        [Ignored]
+        public string Title 
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+        
+        [Ignored]
+        public Command<object> BackButtonPressedCommand { get; set; }
+
+
+        public ObservableObject()
+        {
+            BackButtonPressedCommand = new Command<object>(ClosePage);
+        }
+
+        private async void ClosePage(object obj)
+        {
+            var currentPage = App.Current.MainPage.Navigation.ModalStack.LastOrDefault();
+            if(currentPage != null)
+            {
+                await currentPage.Navigation.PopModalAsync();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

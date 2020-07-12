@@ -7,14 +7,15 @@
              x:Class="EducUp.App">
     <Application.Resources>
 
-        <OnPlatform x:Key="AppFontIcons" x:TypeArguments="x:String">
+        <OnPlatform x:Key="AppFontIcons" x:TypeArguments="x:String" >
             <On Platform="Android" Value="EducUp.ttf#"/>
             <On Platform="iOS" Value="EducUp" />
         </OnPlatform>
 
         <!--#region Colors -->
         <Color x:Key="BackgroundColor">#ffe277</Color>
-        <Color x:Key="MainColor">#58b4ae</Color>
+        <Color x:Key="MainColor">#205C9F</Color>
+        <!--<Color x:Key="MainColor">#58b4ae</Color>-->
         <!--#endregion-->
 
         <!--#region Styles -->
@@ -23,6 +24,47 @@
             <Setter Property="BackgroundColor" Value="{StaticResource MainColor}" />
             <Setter Property="TextColor" Value="White" />
         </Style>
+
+        <Style x:Key="LabelIconStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="{StaticResource AppFontIcons}" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="EntryStyle" TargetType="Entry" >
+            <Setter Property="Margin" Value="15,0,15,0" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+        <!--#endregion-->
+        
+        <!--#region-->
+        <ControlTemplate x:Key="AppPageTemplate">
+            <Grid BindingContext="{TemplateBinding BindingContext}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Navbar-->
+                <Grid Grid.Row="0" BackgroundColor="{StaticResource MainColor}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Text="A" TextColor="White" FontSize="18" FontAttributes="Bold" Style="{StaticResource LabelIconStyle}" Margin="5,0,0,0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackButtonPressedCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Grid.Column="1" Text="{Binding Title}" TextColor="White" FontSize="18" FontAttributes="Bold" VerticalTextAlignment="Center" Margin="10,0,10,0"/>
+                </Grid>
+
+                <!--Page-->
+                <ContentPresenter Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+            </Grid>
+        </ControlTemplate>
         <!--#endregion-->
 
     </Application.Resources>

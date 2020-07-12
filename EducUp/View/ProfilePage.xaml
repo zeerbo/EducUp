@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:vm="clr-namespace:EducUp.ViewModel"
+             mc:Ignorable="d"
+             x:Class="EducUp.View.ProfilePage"
+             ControlTemplate="{StaticResource AppPageTemplate}">
+    <ContentPage.BindingContext>
+        <vm:ProfilePageViewModel x:Name="Vm"/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Spacing="1" BackgroundColor="LightGray" Orientation="Vertical" IsEnabled="{Binding EnableView}" >
+                <ContentView BackgroundColor="White">
+                    <StackLayout Padding="10" Orientation="Vertical" Spacing="0">
+                        <Label FontAttributes="Bold" TextColor="Black" FontSize="20">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="Ciao "/>
+                                    <Span Text="{Binding User.Name}" />
+                                    <Span Text="!" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Label Text="{Binding User.Email}" />
+                    </StackLayout>
+                </ContentView>
+
+                <ContentView BackgroundColor="White">
+                    <StackLayout Orientation="Vertical" Padding="10">
+                        <Entry x:Name="NameEntry" Text="{Binding User.Name}" Placeholder="Nome*" Style="{StaticResource EntryStyle}" IsEnabled="{Binding ModifyMode}"/>
+                        <Entry x:Name="SurnameEntry" Text="{Binding User.Surname}" Placeholder="Cognome*" Style="{StaticResource EntryStyle}" IsEnabled="{Binding ModifyMode}"/>
+                        <Grid Padding="15,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0,5*" />
+                                <ColumnDefinition Width="0,5*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="Data di nascita*" FontSize="18" VerticalTextAlignment="Center" Margin="3,0,0,0" />
+                            <DatePicker x:Name="BirthDatePicker" Grid.Column="1" Date="{Binding User.BirthDate}" FontSize="18" TextColor="Gray" IsEnabled="{Binding ModifyMode}"/>
+                        </Grid>
+                        <Entry x:Name="ParishEntry" Text="{Binding User.Parish}" Placeholder="Parrocchia*" Style="{StaticResource EntryStyle}" IsEnabled="{Binding ModifyMode}"/>
+                        <Entry x:Name="MembershipEntry" Text="{Binding User.Membership}" Placeholder="Codice tessera AC" Style="{StaticResource EntryStyle}" IsEnabled="{Binding ModifyMode}"/>
+                        <Grid  Padding="15,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="AdminCheckBox" Grid.Column="0" IsChecked="{Binding User.IsAdmin, Mode=OneTime}" IsEnabled="{Binding ModifyMode}" Margin="0,0,5,0" CheckedChanged="AdminCheckBox_CheckedChanged"/>
+                            <Label Grid.Column="1" Text="Profilo amministratore" FontSize="18" VerticalTextAlignment="Center" Margin="5,0,0,0"/>
+                        </Grid>
+                        <Entry x:Name="AdminCode" Placeholder="Codice amministratore" Style="{StaticResource EntryStyle}" IsEnabled="{Binding ModifyMode}" IsVisible="{Binding ShowAdminCodeEntry}" />
+
+                        <Button x:Name="ModifyButton" Text="Modifica" Style="{StaticResource ButtonStyle}" Clicked="ModifyButton_Clicked" >
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference SaveButton}, Path=IsVisible}" Value="True" >
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button x:Name="SaveButton" Text="Salva" Style="{StaticResource ButtonStyle}" IsVisible="{Binding ModifyMode}" Clicked="SaveButton_Clicked" />
+                    </StackLayout>
+                </ContentView>
+                
+                <ContentView BackgroundColor="White">
+                    <StackLayout Padding="10" Orientation="Vertical" >
+                        <Label Text="Informativa sulla privacy" TextDecorations="Underline" HeightRequest="50" VerticalTextAlignment="Center" HorizontalOptions="CenterAndExpand" TextColor="{StaticResource MainColor}" >
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding OpenPrivacyCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Button x:Name="LogoutButton" Text="Logout" Style="{StaticResource ButtonStyle}" Clicked="LogoutButton_Clicked" />
+                    </StackLayout>
+                </ContentView>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
