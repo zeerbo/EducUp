@@ -17,8 +17,7 @@
                       SeparatorVisibility="None"
                       HasUnevenRows="False"
                       ItemsSource="{Binding MenuItems}"
-                      ItemTapped="MenuItemsListView_ItemTapped"
-                      SelectionMode="None">
+                      SelectionMode="Single">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="50" >

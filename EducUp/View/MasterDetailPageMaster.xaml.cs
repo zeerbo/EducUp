@@ -27,16 +27,6 @@ namespace EducUp.View
             ListView = MenuItemsListView;
         }
 
-        private async void MenuItemsListView_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            if (e != null && e.Item != null && e.Item is MasterDetailPageMasterMenuItem item && item != null)
-            {
-                var page = (Page)Activator.CreateInstance(item.TargetType);
-                //var navigationPage = new NavigationPage(page);
-                await Navigation.PushModalAsync(page);
-            }
-        }
-
         class MasterDetailPageMasterViewModel : ObservableObject
         {
             public ObservableCollection<MasterDetailPageMasterMenuItem> MenuItems { get; set; }
@@ -45,7 +35,9 @@ namespace EducUp.View
             {
                 MenuItems = new ObservableCollection<MasterDetailPageMasterMenuItem>(new[]
                 {
-                    new MasterDetailPageMasterMenuItem { Title = "Profilo", TargetType = typeof(ProfilePage) }
+                    new MasterDetailPageMasterMenuItem { Title = "I miei passi", TargetType = typeof(StepPage) },
+                    new MasterDetailPageMasterMenuItem { Title = "Eventi", TargetType = typeof(EventListPage) },
+                    new MasterDetailPageMasterMenuItem { Title = "Il mio profilo", TargetType = typeof(ProfilePage) }
                 });
             }
         }

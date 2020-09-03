@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:vm="clr-namespace:EducUp.ViewModel"
+             x:Class="EducUp.View.EventListPage">
+    <ContentPage.BindingContext>
+        <vm:EventListPageViewModel x:Name="Vm" />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <StackLayout AbsoluteLayout.LayoutBounds=".5,.5,1,1" AbsoluteLayout.LayoutFlags="All">
+                <Label Text="Welcome to Xamarin.Forms!"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+
+            <Button x:Name="AddEventButton" 
+                    AbsoluteLayout.LayoutBounds=".95,.96,50,50" 
+                    AbsoluteLayout.LayoutFlags="PositionProportional" 
+                    CornerRadius="30" 
+                    Text="G" 
+                    FontSize="20" 
+                    FontFamily="{StaticResource AppFontIcons}" 
+                    TextColor="White" 
+                    BackgroundColor="{StaticResource MainColor}" 
+                    Clicked="AddEventButton_Clicked"/>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

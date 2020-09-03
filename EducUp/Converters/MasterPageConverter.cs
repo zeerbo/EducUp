@@ -18,6 +18,14 @@ namespace EducUp.Converters
                 {
                     result = "C";
                 }
+                else if (type.Equals(typeof(StepPage)))
+                {
+                    result = "D";
+                }
+                else if (type.Equals(typeof(EventListPage)))
+                {
+                    result = "F";
+                }
             }
 
             return result;

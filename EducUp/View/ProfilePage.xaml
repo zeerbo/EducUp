@@ -5,8 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:vm="clr-namespace:EducUp.ViewModel"
              mc:Ignorable="d"
-             x:Class="EducUp.View.ProfilePage"
-             ControlTemplate="{StaticResource AppPageTemplate}">
+             x:Class="EducUp.View.ProfilePage">
     <ContentPage.BindingContext>
         <vm:ProfilePageViewModel x:Name="Vm"/>
     </ContentPage.BindingContext>

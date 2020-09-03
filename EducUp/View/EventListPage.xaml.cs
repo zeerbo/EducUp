@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+namespace EducUp.View
+{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class EventListPage : ContentPage
+    {
+        public EventListPage()
+        {
+            InitializeComponent();
+        }
+
+        #region Handlers
+
+        private void AddEventButton_Clicked(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+    }
+}

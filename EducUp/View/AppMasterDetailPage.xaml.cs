@@ -16,21 +16,22 @@ namespace EducUp.View
         public AppMasterDetailPage()
         {
             InitializeComponent();
+            MasterPage.ListView.ItemSelected += ListView_ItemSelected;
         }
 
         private void ListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var item = e.SelectedItem as MasterDetailPageMasterMenuItem;
-            if (item == null)
-                return;
+            if (item != null)
+            {
+                var page = (Page)Activator.CreateInstance(item.TargetType);
+                page.Title = item.Title;
 
-            var page = (Page)Activator.CreateInstance(item.TargetType);
-            page.Title = item.Title;
+                Detail = new NavigationPage(page);
+                IsPresented = false;
 
-            Detail = new NavigationPage(page);
-            IsPresented = false;
-
-            MasterPage.ListView.SelectedItem = null;
+                MasterPage.ListView.SelectedItem = null;
+            }
         }
     }
 }
