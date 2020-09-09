@@ -8,21 +8,41 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <AbsoluteLayout>
-            <StackLayout AbsoluteLayout.LayoutBounds=".5,.5,1,1" AbsoluteLayout.LayoutFlags="All">
-                <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-            </StackLayout>
+            <ListView x:Name="eventListView" ItemsSource="{Binding EventsList}" RowHeight="80" IsGroupingEnabled="True" GroupDisplayBinding="{Binding StartDateTime}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10,5,10,5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.6*" />
+                                    <RowDefinition Height="0.4*" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Text="{Binding Titolo}" TextColor="Black" FontSize="18" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                                <Label Grid.Row="1" TextColor="Black" FontAttributes="Italic" LineBreakMode="TailTruncation" >
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding StartDateTime}" />
+                                            <Span Text=" - " />
+                                            <Span Text="{Binding EndDateTime}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding StartDateTime.Date}" />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+            </ListView>
 
             <Button x:Name="AddEventButton" 
-                    AbsoluteLayout.LayoutBounds=".95,.96,50,50" 
-                    AbsoluteLayout.LayoutFlags="PositionProportional" 
-                    CornerRadius="30" 
+                    Style="{StaticResource AddButtonStyle}"
                     Text="G" 
-                    FontSize="20" 
-                    FontFamily="{StaticResource AppFontIcons}" 
-                    TextColor="White" 
-                    BackgroundColor="{StaticResource MainColor}" 
                     Clicked="AddEventButton_Clicked"/>
         </AbsoluteLayout>
     </ContentPage.Content>

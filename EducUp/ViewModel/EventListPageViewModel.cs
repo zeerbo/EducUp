@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EducUp.ViewModel
 {
@@ -20,6 +21,15 @@ namespace EducUp.ViewModel
                 _eventsList = value;
                 OnPropertyChanged(nameof(EventsList));
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public async Task SetEventList()
+        {
+            EventsList = await App.DataService.GetEventListAsync();
         }
 
         #endregion

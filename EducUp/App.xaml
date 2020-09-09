@@ -25,6 +25,16 @@
             <Setter Property="TextColor" Value="White" />
         </Style>
 
+        <Style x:Key="AddButtonStyle" TargetType="Button">
+            <Setter Property="AbsoluteLayout.LayoutBounds" Value=".95,.97,50,50" />
+            <Setter Property="AbsoluteLayout.LayoutFlags" Value="PositionProportional" />
+            <Setter Property="CornerRadius" Value="30" />
+            <Setter Property="FontFamily" Value="{StaticResource AppFontIcons}" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="BackgroundColor" Value="{StaticResource MainColor}" />
+        </Style>
+
         <Style x:Key="LabelIconStyle" TargetType="Label">
             <Setter Property="FontFamily" Value="{StaticResource AppFontIcons}" />
             <Setter Property="VerticalTextAlignment" Value="Center" />
@@ -32,6 +42,11 @@
         </Style>
 
         <Style x:Key="EntryStyle" TargetType="Entry" >
+            <Setter Property="Margin" Value="15,0,15,0" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+
+        <Style x:Key="EditorStyle" TargetType="Editor" >
             <Setter Property="Margin" Value="15,0,15,0" />
             <Setter Property="FontSize" Value="18" />
         </Style>

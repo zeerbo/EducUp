@@ -13,6 +13,17 @@ namespace EducUp.Model
     {
         #region Properties
 
+        private string _id;
+        public string Id
+        {
+            get => _id;
+            set
+            {
+                _id = value;
+                OnPropertyChanged(nameof(Id));
+            }
+        }
+
         private string _titolo;
         public string Titolo
         {
@@ -57,8 +68,8 @@ namespace EducUp.Model
             }
         }
 
-        public int _stepNumber;
-        private int StepNumber
+        private int _stepNumber;
+        public int StepNumber
         {
             get => _stepNumber;
             set
@@ -68,6 +79,17 @@ namespace EducUp.Model
             }
         }
 
+        private string _location;
+        public string Location
+        {
+            get => _location;
+            set
+            {
+                _location = value;
+                OnPropertyChanged(nameof(Location));
+            }
+        }
+        
         #endregion
     }
 }

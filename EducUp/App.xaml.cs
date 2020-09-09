@@ -88,5 +88,22 @@ namespace EducUp
         {
             return Preferences.Get(Constants.EMAIL_PREFERENCE, string.Empty);
         }
+    
+        public static string GetNewGuid()
+        {
+            string result = string.Empty;
+
+            try
+            {
+                Guid guid = Guid.NewGuid();
+                result = guid.ToString();
+            }
+            catch
+            {
+                result = string.Empty;
+            }
+
+            return result;
+        }
     }
 }
