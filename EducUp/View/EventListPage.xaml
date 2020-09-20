@@ -8,22 +8,29 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <AbsoluteLayout>
-            <ListView x:Name="eventListView" ItemsSource="{Binding EventsList}" RowHeight="80" IsGroupingEnabled="True" GroupDisplayBinding="{Binding StartDateTime}">
+            <ListView x:Name="EventListView" 
+                      AbsoluteLayout.LayoutBounds="0,0,1,1" 
+                      AbsoluteLayout.LayoutFlags="All" 
+                      ItemsSource="{Binding EventsList}" 
+                      RowHeight="80"
+                      Footer="True"
+                      ItemTapped="EventListView_ItemTapped"
+                      SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid Padding="10,5,10,5">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="0.6*" />
+                                    <RowDefinition Height="auto" />
                                     <RowDefinition Height="0.4*" />
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Text="{Binding Titolo}" TextColor="Black" FontSize="18" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                                <Label Grid.Row="0" Text="{Binding Titolo}" TextColor="Black" FontSize="18" MaxLines="2" FontAttributes="Bold" LineBreakMode="TailTruncation" />
                                 <Label Grid.Row="1" TextColor="Black" FontAttributes="Italic" LineBreakMode="TailTruncation" >
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding StartDateTime}" />
+                                            <Span Text="{Binding StartDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" />
                                             <Span Text=" - " />
-                                            <Span Text="{Binding EndDateTime}" />
+                                            <Span Text="{Binding EndDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
@@ -31,14 +38,25 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                <ListView.GroupHeaderTemplate>
+                <ListView.FooterTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <Label Text="{Binding StartDateTime.Date}" />
-                        </ViewCell>
+                        <Button x:Name="LoadMoretButton" Grid.Row="2" HeightRequest="60" Text="Carica altri eventi..." BackgroundColor="White" Clicked="LoadMoretButton_Clicked" />
                     </DataTemplate>
-                </ListView.GroupHeaderTemplate>
+                </ListView.FooterTemplate>
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView" Binding="{Binding EventsList.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </ListView.Triggers>
             </ListView>
+
+            <Label Text="Non ci sono eventi in programma!" AbsoluteLayout.LayoutBounds=".5,.5,.5,.25" AbsoluteLayout.LayoutFlags="All" FontAttributes="Bold" FontSize="20" HorizontalTextAlignment="Center" Margin="10" IsVisible="False">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding EventsList.Count}" Value="0">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
 
             <Button x:Name="AddEventButton" 
                     Style="{StaticResource AddButtonStyle}"

@@ -46,8 +46,8 @@ namespace EducUp.Model
             }
         }
 
-        private DateTime _startDateTime;
-        public DateTime StartDateTime
+        private DateTimeOffset _startDateTime;
+        public DateTimeOffset StartDateTime
         {
             get => _startDateTime;
             set
@@ -57,8 +57,8 @@ namespace EducUp.Model
             }
         }
 
-        private DateTime _endDateTime;
-        public DateTime EndDateTime
+        private DateTimeOffset _endDateTime;
+        public DateTimeOffset EndDateTime
         {
             get => _endDateTime;
             set

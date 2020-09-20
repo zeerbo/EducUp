@@ -279,14 +279,18 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event)).OrderBy(nameof(Event.StartDateTime)).StartAfter(evento).LimitTo(20).GetDocumentsAsync();
-                    foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                    IDocumentSnapshot documentSnapshotLast = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetDocumentAsync();
+                    if (documentSnapshotLast != null)
                     {
-                        if (documentSnapshot.Exists)
+                        IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event)).OrderBy(nameof(Event.StartDateTime)).StartAfter(documentSnapshotLast).LimitTo(20).GetDocumentsAsync();
+                        foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                         {
-                            Event newEvent = documentSnapshot.ToObject<Event>();
-                            result.Add(newEvent);
-                        }
+                            if (documentSnapshot.Exists)
+                            {
+                                Event newEvent = documentSnapshot.ToObject<Event>();
+                                result.Add(newEvent);
+                            }
+                        } 
                     }
                 }
                 catch (Exception e)

@@ -3,7 +3,8 @@
                   xmlns="http://xamarin.com/schemas/2014/forms"
                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
                   xmlns:vm="clr-namespace:EducUp.ViewModel" 
-                  xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+                  xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" 
+                  xmlns:converters="clr-namespace:EducUp.Converters"
                   x:Class="EducUp.View.NewEventPopupPage"
                   IsAnimationEnabled="True">
     <pages:PopupPage.BindingContext>
@@ -12,53 +13,80 @@
     <pages:PopupPage.Animation>
         <animations:ScaleAnimation PositionIn="Bottom" PositionOut="Bottom"/>
     </pages:PopupPage.Animation>
+    <pages:PopupPage.Resources>
+        <converters:CreateModifyButtonEventConverter x:Key="CreateModifyButtonEventConverter" />
+    </pages:PopupPage.Resources>
     <pages:PopupPage.Content>
-        <ScrollView VerticalOptions="EndAndExpand">
-            <Grid Padding="10" BackgroundColor="White" RowSpacing="0">
+        <Grid RowSpacing="0" BackgroundColor="White" >
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer x:Name="swipeDown" Direction="Down" Swiped="SwipeDown_Swiped"/>
+            </Grid.GestureRecognizers>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Text="H" TextColor="Black" FontSize="10" HeightRequest="30" Style="{StaticResource LabelIconStyle}" VerticalTextAlignment="Center" Margin="10,0,0,0" />
+
+            <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="100" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="50" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
                     <RowDefinition Height="60" />
                 </Grid.RowDefinitions>
-                <Label Grid.Row="0" Text="Nuovo evento" FontSize="24" TextColor="Black" FontAttributes="Bold" Margin="3,0,0,0" />
-                <Entry x:Name="TitleEntry" Grid.Row="1" Text="{Binding Event.Titolo}" Placeholder="Titolo*" Style="{StaticResource EntryStyle}" />
-                <Entry x:Name="DescriptionEditor" Grid.Row="2" Text="{Binding Event.Description}" Placeholder="Descrizione" Style="{StaticResource EditorStyle}" />
-                <Entry x:Name="LocationEntry" Grid.Row="3" Text="{Binding Event.Location}" Placeholder="Luogo" Style="{StaticResource EntryStyle}" />
-                <Label Grid.Row="4" Text="Data e ora di inizio*" FontSize="18" VerticalTextAlignment="End" Margin="18,0,0,0" />
-                <Grid Grid.Row="5" Padding="15,0,15,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0,6*" />
-                        <ColumnDefinition Width="0,4*" />
-                    </Grid.ColumnDefinitions>
-                    <DatePicker x:Name="StartDatePicker" Grid.Column="0" Date="{Binding Event.StartDateTime}" FontSize="18" TextColor="Black" DateSelected="StartDatePicker_DateSelected"/>
-                    <TimePicker x:Name="StartTimePicker" Grid.Column="1" Time="00:00" FontSize="18" TextColor="Black" Unfocused="StartTimePicker_Unfocused"/>
-                </Grid>
-                <Label Grid.Row="6" Text="Data e ora di fine*" FontSize="18" VerticalTextAlignment="End" Margin="18,0,0,0" />
-                <Grid Grid.Row="7" Padding="15,0,15,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0,6*" />
-                        <ColumnDefinition Width="0,4*" />
-                    </Grid.ColumnDefinitions>
-                    <DatePicker x:Name="EndDatePicker" Grid.Column="0" Date="{Binding Event.EndDateTime}" FontSize="18" TextColor="Black" DateSelected="EndDatePicker_DateSelected"/>
-                    <TimePicker x:Name="EndTimePicker" Grid.Column="1" Time="00:00" FontSize="18" TextColor="Black" Unfocused="EndTimePicker_Unfocused"/>
-                </Grid>
-                <Grid Grid.Row="8" Padding="15,0,15,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0,5*" />
-                        <ColumnDefinition Width="0,5*" />
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Text="Numero passi*" FontSize="18" TextColor="Gray" VerticalTextAlignment="Center"/>
-                    <Entry x:Name="StepEntry" Grid.Column="1" Text="{Binding Event.StepNumber}" Keyboard="Numeric" FontSize="18" TextColor="Black" />
-                </Grid>
-                <Button x:Name="CreateEventButton" Grid.Row="9" Text="Crea evento" Style="{StaticResource ButtonStyle}" Clicked="CreateEventButton_Clicked"/>
+
+                <Label Grid.Row="0" Text="Nuovo evento" FontSize="24" TextColor="Black" FontAttributes="Bold" Margin="5,0,0,0" />
+
+                <ScrollView Grid.Row="1">
+                    <Grid Padding="10" RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="100" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Entry x:Name="TitleEntry" Grid.Row="0" Text="{Binding Event.Titolo, Mode=OneWay}" Placeholder="Titolo*" MaxLength="100" Style="{StaticResource EntryStyle}" />
+                        <Entry x:Name="DescriptionEditor" Grid.Row="1" Text="{Binding Event.Description, Mode=OneWay}" Placeholder="Descrizione" Style="{StaticResource EditorStyle}" />
+                        <Entry x:Name="LocationEntry" Grid.Row="2" Text="{Binding Event.Location, Mode=OneWay}" Placeholder="Luogo" Style="{StaticResource EntryStyle}" />
+                        
+                        <Label Grid.Row="3" Text="Data e ora di inizio*" FontSize="18" VerticalTextAlignment="End" Margin="18,0,0,0" />
+                        <Grid Grid.Row="4" Padding="15,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0,6*" />
+                                <ColumnDefinition Width="0,4*" />
+                            </Grid.ColumnDefinitions>
+                            <DatePicker x:Name="StartDatePicker" Grid.Column="0" Date="{Binding StartDateTime}" FontSize="18" TextColor="Black" DateSelected="StartDatePicker_DateSelected"/>
+                            <TimePicker x:Name="StartTimePicker" Grid.Column="1" Time="{Binding StartTimespan}" FontSize="18" TextColor="Black" Unfocused="StartTimePicker_Unfocused"/>
+                        </Grid>
+                        
+                        <Label Grid.Row="5" Text="Data e ora di fine*" FontSize="18" VerticalTextAlignment="End" Margin="18,0,0,0" />
+                        <Grid Grid.Row="6" Padding="15,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0,6*" />
+                                <ColumnDefinition Width="0,4*" />
+                            </Grid.ColumnDefinitions>
+                            <DatePicker x:Name="EndDatePicker" Grid.Column="0" Date="{Binding EndDateTime}" FontSize="18" TextColor="Black" DateSelected="EndDatePicker_DateSelected"/>
+                            <TimePicker x:Name="EndTimePicker" Grid.Column="1" Time="{Binding EndTimespan}" FontSize="18" TextColor="Black" Unfocused="EndTimePicker_Unfocused"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="7" Padding="15,0,15,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0,5*" />
+                                <ColumnDefinition Width="0,5*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Text="Numero passi*" FontSize="18" TextColor="Gray" VerticalTextAlignment="Center"/>
+                            <Entry x:Name="StepEntry" Grid.Column="1" Text="{Binding Event.StepNumber, Mode=OneWay}" Keyboard="Numeric" FontSize="18" TextColor="Black" />
+                        </Grid>
+                    </Grid>
+                </ScrollView>
+
+                <Button x:Name="CreateEventButton" Grid.Row="2" Text="Crea evento" Style="{StaticResource ButtonStyle}" Clicked="CreateEventButton_Clicked" Margin="5" IsVisible="{Binding PageMode, Converter={StaticResource CreateModifyButtonEventConverter,CreateModifyButtonEventConverter}, ConverterParameter=create}"/>
+                <Button x:Name="ModifyEventButton" Grid.Row="2" Text="Modifica evento" Style="{StaticResource ButtonStyle}" Clicked="ModifyEventButton_Clicked" Margin="5" IsVisible="{Binding PageMode, Converter={StaticResource CreateModifyButtonEventConverter,CreateModifyButtonEventConverter}, ConverterParameter=modify}"/>
             </Grid>
-        </ScrollView>
+        </Grid>
     </pages:PopupPage.Content>
 </pages:PopupPage>

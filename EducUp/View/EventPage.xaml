@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:vm="clr-namespace:EducUp.View"
+             x:Class="EducUp.View.EventPage"
+             ControlTemplate="{StaticResource AppPageTemplate}">
+    <ContentPage.BindingContext>
+        <vm:EventPageViewModel x:Name="Vm" />
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <Style TargetType="Label" x:Key="LabelFieldStyle" >
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+        </Style>
+        
+        <Style TargetType="Label" x:Key="LabelDataStyle" >
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="HorizontalTextAlignment" Value="Start" />
+            <Setter Property="Margin" Value="10,0,0,0" />
+        </Style>
+    </ContentPage.Resources> 
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <StackLayout Spacing="1" BackgroundColor="LightGray" Orientation="Vertical">
+                    <ContentView BackgroundColor="White">
+                        <Grid Padding="10,0,10,5" RowSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Column="0" Text="{Binding Evento.Titolo}" TextColor="Black" FontAttributes="Bold" FontSize="20" LineBreakMode="TailTruncation" MaxLines="2" Margin="0,0,0,5" />
+                            <Label Grid.Row="1" Text="{Binding Evento.Description}" TextColor="Black" FontAttributes="Italic" />
+                        </Grid>
+                    </ContentView>
+                    <ContentView BackgroundColor="White" VerticalOptions="FillAndExpand">
+                        <StackLayout Padding="5">
+                            <Label Text="Inizio" Style="{StaticResource LabelFieldStyle}" />
+                            <Label Text="{Binding Evento.StartDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" Style="{StaticResource LabelDataStyle}" />
+                            <Label Text="Fine" Style="{StaticResource LabelFieldStyle}" />
+                            <Label Text="{Binding Evento.EndDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" Style="{StaticResource LabelDataStyle}" />
+                            <Label Text="Luogo" Style="{StaticResource LabelFieldStyle}" />
+                            <Label Text="{Binding Evento.Location}" Style="{StaticResource LabelDataStyle}" />
+                            <Label Text="Passi" Style="{StaticResource LabelFieldStyle}" />
+                            <Label Text="{Binding Evento.StepNumber}" Style="{StaticResource LabelDataStyle}" />
+                        </StackLayout>
+                    </ContentView>
+                </StackLayout>
+            </ScrollView>
+
+            <Frame AbsoluteLayout.LayoutBounds=".5,.95,.65,40" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional" BackgroundColor="White" CornerRadius="20" HasShadow="True" Padding="0">
+                <Grid ColumnSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.3333*" />
+                        <ColumnDefinition Width="0.3333*" />
+                        <ColumnDefinition Width="0.3333*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="ModifyButton" Grid.Row="0" Grid.Column="0" Text="E" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
+                    <Button x:Name="ParticipantsButton" Grid.Column="1" Text="C" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ParticipantsButton_Clicked" />
+                    <Button x:Name="DeleteButton" Grid.Column="2" Text="I" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="DeleteButton_Clicked" />
+                </Grid>
+            </Frame>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,8 +1,14 @@
-﻿using Rg.Plugins.Popup.Extensions;
+﻿using EducUp.Enumerations;
+using EducUp.Model;
+using EducUp.Utils;
+using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
@@ -18,26 +24,53 @@ namespace EducUp.View
             InitializeComponent();
         }
 
+        public NewEventPopupPage(Event evento) : this()
+        {
+            Vm.Event = evento;
+            Vm.PageMode = NewEventPageMode.ModifyEvent;
+        }
+
+        #region Overrides 
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            InitializeViewModel();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            ManageRefreshBackView();
+        }
+
+        #endregion
+
+
         #region Handlers
 
         private async void CreateEventButton_Clicked(object sender, EventArgs e)
         {
             bool result = false;
 
-            if(Vm.Event != null && !string.IsNullOrEmpty(Vm.Event.Titolo) && !string.IsNullOrEmpty(StepEntry.Text))
+            if(Vm.Event != null && !string.IsNullOrEmpty(TitleEntry.Text) && !string.IsNullOrEmpty(StepEntry.Text))
             {
-                Vm.Event.StartDateTime.AddHours(StartTimePicker.Time.Hours);
-                Vm.Event.StartDateTime.AddMinutes(StartTimePicker.Time.Minutes);
-                Vm.Event.EndDateTime.AddHours(EndTimePicker.Time.Hours);
-                Vm.Event.EndDateTime.AddMinutes(EndTimePicker.Time.Minutes);
-
-                result = await Vm.CreateEventAsync();
-                if (result)
+                try
                 {
-                    await DisplayAlert("Completato!", "Evento creato con successo", "Ok");
-                    await Navigation.PopPopupAsync();
+                    int step = Convert.ToInt32(StepEntry.Text);
+                    result = await Vm.CreateEventAsync(TitleEntry.Text, DescriptionEditor.Text, LocationEntry.Text, step);
+                    if (result)
+                    {
+                        await DisplayAlert("Completato!", "Evento creato con successo", "Ok");
+                        await Navigation.PopPopupAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Attenzione!", "Non è stato possibile creare l'evento", "Ok");
+                    }
                 }
-                else
+                catch
                 {
                     await DisplayAlert("Attenzione!", "Non è stato possibile creare l'evento", "Ok");
                 }
@@ -68,6 +101,41 @@ namespace EducUp.View
             NormailzeTime();
         }
 
+        private async void SwipeDown_Swiped(object sender, SwipedEventArgs e)
+        {
+            await Navigation.PopPopupAsync();
+        }
+        private async void ModifyEventButton_Clicked(object sender, EventArgs e)
+        {
+            bool result = false;
+
+            if (Vm.Event != null && !string.IsNullOrEmpty(Vm.Event.Titolo) && !string.IsNullOrEmpty(StepEntry.Text))
+            {
+                try
+                {
+                    int step = Convert.ToInt32(StepEntry.Text);
+                    result = await Vm.ModifyEventAsync(TitleEntry.Text, DescriptionEditor.Text, LocationEntry.Text, step);
+                    if (result)
+                    {
+                        await DisplayAlert("Completato!", "Evento modificato con successo", "Ok");
+                        await Navigation.PopPopupAsync();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Attenzione!", "Non è stato possibile salvare le modifiche", "Ok");
+                    }
+                }
+                catch
+                {
+                    await DisplayAlert("Attenzione!", "Non è stato possibile salvare le modifiche", "Ok");
+                }
+            }
+            else
+            {
+                await DisplayAlert("Attenzione!", "Dati obbligatori mancanti", "Ok");
+            }
+        }
+
         #endregion
 
 
@@ -87,6 +155,28 @@ namespace EducUp.View
             {
                 TimeSpan timeSpanToAdd = StartTimePicker.Time < TimeSpan.FromHours(23) ? TimeSpan.FromHours(1) : TimeSpan.FromMinutes(59);
                 EndTimePicker.Time = StartTimePicker.Time + timeSpanToAdd;
+            }
+        }
+
+        private void ManageRefreshBackView()
+        {
+            MessagingCenter.Send(this, Constants.NEW_EVENT);
+        }
+
+        private void InitializeViewModel()
+        {
+            switch (Vm.PageMode)
+            {
+                case NewEventPageMode.NewEvent:
+                    Vm.InitializePropertiesNewMode();
+                    break;
+
+                case NewEventPageMode.ModifyEvent:
+                    Vm.InitializePropertiesModifyMode();
+                    break;
+
+                default:
+                    break;
             }
         }
 
