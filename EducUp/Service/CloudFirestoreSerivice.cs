@@ -151,6 +151,34 @@ namespace EducUp.Service
             return result;
         }
 
+        public async Task<ObservableCollection<User>> GetUserListForEvent(Event evento)
+        {
+            ObservableCollection<User> result = new ObservableCollection<User>();
+
+            if (evento != null)
+            {
+                try
+                {
+                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetCollection(nameof(User)).GetDocumentsAsync();
+                    foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                    {
+                        if (documentSnapshot.Exists)
+                        {
+                            User newUser = documentSnapshot.ToObject<User>();
+                            result.Add(newUser);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    result = new ObservableCollection<User>();
+                    App.LogException(e);
+                }
+            }
+
+            return result;
+        }
+
         #endregion
 
 

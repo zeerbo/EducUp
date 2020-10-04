@@ -1,6 +1,7 @@
 ﻿using EducUp.ViewModel.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
@@ -89,7 +90,18 @@ namespace EducUp.Model
                 OnPropertyChanged(nameof(Location));
             }
         }
-        
+
+        private ObservableCollection<User> _usersList;
+        public ObservableCollection<User> UsersList
+        {
+            get => _usersList;
+            set
+            {
+                _usersList = value;
+                OnPropertyChanged(nameof(UsersList));
+            }
+        }
+
         #endregion
     }
 }

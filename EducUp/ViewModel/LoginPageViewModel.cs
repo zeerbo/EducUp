@@ -45,6 +45,12 @@ namespace EducUp.ViewModel
             if (result)
             {
                 App.SaveCredentials(email, password);
+
+                User user = await App.DataService.GetUserAsync(email);
+                if(user != null)
+                {
+                    App.SaveAdminProfile(user.IsAdmin);
+                }
             }
 
             return result;
