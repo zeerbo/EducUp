@@ -75,13 +75,16 @@ namespace EducUp
 
         public static bool SaveCredentials(string email, string password)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-                return false;
+            bool result = false;
 
-            Preferences.Set(Constants.EMAIL_PREFERENCE, email);
-            Preferences.Set(Constants.PASSWORD_PREFERENCE, password);
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+            {
+                Preferences.Set(Constants.EMAIL_PREFERENCE, email);
+                Preferences.Set(Constants.PASSWORD_PREFERENCE, password);
+                result = true;
+            }
 
-            return true;
+            return result;
         }
     
         public static string GetUserEmail()
@@ -104,6 +107,16 @@ namespace EducUp
             }
 
             return result;
+        }
+    
+        public static void SaveAdminProfile(bool isAdminProfile)
+        {
+            Preferences.Set(Constants.ADMIN_PREFERENCE, isAdminProfile);
+        }
+
+        public static bool IsAdminProfile()
+        {
+            return Preferences.Get(Constants.ADMIN_PREFERENCE, false);
         }
     }
 }

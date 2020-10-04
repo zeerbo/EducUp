@@ -1,5 +1,7 @@
-﻿using EducUp.Model;
+﻿using EducUp.Enumerations;
+using EducUp.Model;
 using EducUp.Utils;
+using EducUp.ViewModel;
 using Rg.Plugins.Popup.Extensions;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,20 @@ namespace EducUp.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EventListPage : ContentPage
     {
+        #region Bindable Properties
+
+        public static readonly BindableProperty PageModeProperty = BindableProperty.Create(nameof(PageMode), typeof(EventiListPageMode), typeof(EventListPage), EventiListPageMode.FutureEventMode, BindingMode.TwoWay);
+        public EventiListPageMode PageMode
+        {
+            get => (EventiListPageMode)GetValue(PageModeProperty);
+            set
+            {
+                SetValue(PageModeProperty, value);
+            }
+        }
+
+        #endregion
+
         public EventListPage()
         {
             InitializeComponent();
@@ -30,16 +46,23 @@ namespace EducUp.View
             base.OnAppearing();
             await RefreshView();
 
-            MessagingCenter.Subscribe<NewEventPopupPage>(this, Constants.NEW_EVENT, async (sender) =>
+            if (PageMode == EventiListPageMode.FutureEventMode)
             {
-                await RefreshView();
-            });
+                MessagingCenter.Subscribe<NewEventPopupPage>(this, Constants.NEW_EVENT, async (sender) =>
+                {
+                    await RefreshView();
+                }); 
+            }
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            MessagingCenter.Unsubscribe<NewEventPopupPage>(this, Constants.NEW_EVENT);
+
+            if (PageMode == EventiListPageMode.FutureEventMode)
+            {
+                MessagingCenter.Unsubscribe<NewEventPopupPage>(this, Constants.NEW_EVENT); 
+            }
         }
 
         #endregion
@@ -58,7 +81,7 @@ namespace EducUp.View
 
         private async void LoadMoretButton_Clicked(object sender, EventArgs e)
         {
-            await Vm.LoadMoreEvents();
+            await Vm.LoadMoreEvents(PageMode);
         }
 
         private async void EventListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -77,7 +100,8 @@ namespace EducUp.View
 
         public async Task RefreshView()
         {
-            await Vm.SetEventList();
+            Vm.SetPropertyPage(PageMode);
+            await Vm.SetEventList(PageMode);
         }
 
 

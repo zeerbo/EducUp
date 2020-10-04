@@ -26,8 +26,10 @@ namespace EducUp.Common
         Task<bool> UpdateEventAsync(Event evento);
         Task<bool> DeleteEventAsync(Event evento);
         Task<Event> GetEventAsync(string id);
-        Task<ObservableCollection<Event>> GetEventListAsync();
-        Task<ObservableCollection<Event>> GetNextEventListPageAsync(Event evento);
+        Task<ObservableCollection<Event>> GetFutureEventListAsync();
+        Task<ObservableCollection<Event>> GetNextFutureEventListPageAsync(Event evento);
+        Task<ObservableCollection<Event>> GetPastEventListAsync();
+        Task<ObservableCollection<Event>> GetNextPastEventListPageAsync(Event evento);
 
         #endregion
     }

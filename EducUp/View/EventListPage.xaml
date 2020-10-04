@@ -60,6 +60,7 @@
 
             <Button x:Name="AddEventButton" 
                     Style="{StaticResource AddButtonStyle}"
+                    IsVisible="{Binding AddButtonVisible}"
                     Text="G" 
                     Clicked="AddEventButton_Clicked"/>
         </AbsoluteLayout>

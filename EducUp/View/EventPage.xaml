@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:vm="clr-namespace:EducUp.View"
+             xmlns:vm1="clr-namespace:EducUp.ViewModel"
              x:Class="EducUp.View.EventPage"
              ControlTemplate="{StaticResource AppPageTemplate}">
     <ContentPage.BindingContext>
-        <vm:EventPageViewModel x:Name="Vm" />
+        <vm1:EventPageViewModel x:Name="Vm" />
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <Style TargetType="Label" x:Key="LabelFieldStyle" >
@@ -50,7 +50,7 @@
                 </StackLayout>
             </ScrollView>
 
-            <Frame AbsoluteLayout.LayoutBounds=".5,.95,.65,40" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional" BackgroundColor="White" CornerRadius="20" HasShadow="True" Padding="0">
+            <Frame AbsoluteLayout.LayoutBounds=".5,.95,.65,40" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional" IsVisible="{Binding IsManagmentPanelVisible}" BackgroundColor="White" CornerRadius="20" HasShadow="True" Padding="0">
                 <Grid ColumnSpacing="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.3333*" />
@@ -58,9 +58,9 @@
                         <ColumnDefinition Width="0.3333*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="ModifyButton" Grid.Row="0" Grid.Column="0" Text="E" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
-                    <Button x:Name="ParticipantsButton" Grid.Column="1" Text="C" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ParticipantsButton_Clicked" />
-                    <Button x:Name="DeleteButton" Grid.Column="2" Text="I" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="DeleteButton_Clicked" />
+                    <Button x:Name="ModifyButton" Grid.Column="0" IsEnabled="{Binding IsModifyButtonEnabled}" Text="E" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
+                    <Button x:Name="ParticipantsButton" Grid.Column="1" IsEnabled="{Binding IsAddParticipantsButtonEnabled}" Text="C" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ParticipantsButton_Clicked" />
+                    <Button x:Name="DeleteButton" Grid.Column="2" IsEnabled="{Binding IsDeleteButtonEnabled}"  Text="I" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="DeleteButton_Clicked" />
                 </Grid>
             </Frame>
         </AbsoluteLayout>

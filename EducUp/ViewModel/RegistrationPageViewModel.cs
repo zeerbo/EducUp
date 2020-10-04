@@ -29,6 +29,17 @@ namespace EducUp.ViewModel
             }
         }
 
+        private DateTime _selectedDate;
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged(nameof(SelectedDate));
+            }
+        }
+
         #endregion
 
 
@@ -80,6 +91,7 @@ namespace EducUp.ViewModel
             if (resultAuth)
             {
                 App.SaveCredentials(User.Email, password);
+                App.SaveAdminProfile(User.IsAdmin);
             }
 
             return resultAuth;

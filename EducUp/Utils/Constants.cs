@@ -11,6 +11,7 @@ namespace EducUp.Utils
 
         public const string EMAIL_PREFERENCE = "email";
         public const string PASSWORD_PREFERENCE = "password";
+        public const string ADMIN_PREFERENCE = "isadmin";
 
         public const string NEW_EVENT = "NewEvent";
         public const string MODIFY_EVENT = "ModifyEvent";

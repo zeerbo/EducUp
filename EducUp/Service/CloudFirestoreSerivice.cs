@@ -246,13 +246,17 @@ namespace EducUp.Service
             return result;
         }
 
-        public async Task<ObservableCollection<Event>> GetEventListAsync()
+        public async Task<ObservableCollection<Event>> GetFutureEventListAsync()
         {
             ObservableCollection<Event> result = new ObservableCollection<Event>();
 
             try
             {
-                IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event)).OrderBy(nameof(Event.StartDateTime)).LimitTo(20).GetDocumentsAsync();
+                IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                                                                .WhereGreaterThanOrEqualsTo(nameof(Event.StartDateTime), DateTime.Now)
+                                                                .OrderBy(nameof(Event.StartDateTime))
+                                                                .LimitTo(20)
+                                                                .GetDocumentsAsync();
                 foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                 {
                     if (documentSnapshot.Exists)
@@ -271,7 +275,7 @@ namespace EducUp.Service
             return result;
         }
 
-        public async Task<ObservableCollection<Event>> GetNextEventListPageAsync(Event evento)
+        public async Task<ObservableCollection<Event>> GetNextFutureEventListPageAsync(Event evento)
         {
             ObservableCollection<Event> result = new ObservableCollection<Event>();
 
@@ -282,7 +286,12 @@ namespace EducUp.Service
                     IDocumentSnapshot documentSnapshotLast = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetDocumentAsync();
                     if (documentSnapshotLast != null)
                     {
-                        IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event)).OrderBy(nameof(Event.StartDateTime)).StartAfter(documentSnapshotLast).LimitTo(20).GetDocumentsAsync();
+                        IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                                                                        .WhereGreaterThanOrEqualsTo(nameof(Event.StartDateTime), DateTime.Now)
+                                                                        .OrderBy(nameof(Event.StartDateTime))
+                                                                        .StartAfter(documentSnapshotLast)
+                                                                        .LimitTo(20)
+                                                                        .GetDocumentsAsync();
                         foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                         {
                             if (documentSnapshot.Exists)
@@ -300,6 +309,69 @@ namespace EducUp.Service
                 }
 
             }
+            return result;
+        }
+
+        public async Task<ObservableCollection<Event>> GetPastEventListAsync()
+        {
+            ObservableCollection<Event> result = new ObservableCollection<Event>();
+
+            try
+            {
+                IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                                                                .WhereLessThan(nameof(Event.StartDateTime), DateTime.Now)
+                                                                .OrderBy(nameof(Event.StartDateTime), true)
+                                                                .LimitTo(20)
+                                                                .GetDocumentsAsync();
+                foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                {
+                    if (documentSnapshot.Exists)
+                    {
+                        Event newEvent = documentSnapshot.ToObject<Event>();
+                        result.Add(newEvent);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result = null;
+                App.LogException(e);
+            }
+
+            return result;
+        }
+
+        public async Task<ObservableCollection<Event>> GetNextPastEventListPageAsync(Event evento)
+        {
+            ObservableCollection<Event> result = new ObservableCollection<Event>();
+
+            try
+            {
+                IDocumentSnapshot documentSnapshotLast = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetDocumentAsync();
+                if (documentSnapshotLast != null)
+                {
+                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                                                                            .WhereLessThan(nameof(Event.StartDateTime), DateTime.Now)
+                                                                            .OrderBy(nameof(Event.StartDateTime), true)
+                                                                            .StartAfter(documentSnapshotLast)
+                                                                            .LimitTo(20)
+                                                                            .GetDocumentsAsync();
+                    foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                    {
+                        if (documentSnapshot.Exists)
+                        {
+                            Event newEvent = documentSnapshot.ToObject<Event>();
+                            result.Add(newEvent);
+                        }
+                    } 
+                }
+            }
+            catch (Exception e)
+            {
+                result = null;
+                App.LogException(e);
+            }
+
             return result;
         }
 

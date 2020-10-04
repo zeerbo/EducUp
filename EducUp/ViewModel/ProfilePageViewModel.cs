@@ -46,6 +46,17 @@ namespace EducUp.ViewModel
             }
         }
 
+        private DateTime _selectedDate;
+        public DateTime SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged(nameof(SelectedDate));
+            }
+        }
+
         #endregion
 
         #region Constructor
@@ -63,21 +74,21 @@ namespace EducUp.ViewModel
 
         public async Task<bool> SetUserAsync()
         {
+            bool result = false;
             string email = App.GetUserEmail();
 
             if (!string.IsNullOrEmpty(email))
             {
-                User = await App.DataService.GetUserAsync(email); 
+                User = await App.DataService.GetUserAsync(email);
+
+                if (User != null)
+                {
+                    SelectedDate = User.BirthDate.Date;
+                    result = true;
+                }
             }
 
-            if(User != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return result;
         }
 
         public async Task<bool> SaveUserAsync()

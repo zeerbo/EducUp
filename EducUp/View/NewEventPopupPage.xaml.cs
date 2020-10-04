@@ -105,6 +105,7 @@ namespace EducUp.View
         {
             await Navigation.PopPopupAsync();
         }
+        
         private async void ModifyEventButton_Clicked(object sender, EventArgs e)
         {
             bool result = false;
@@ -134,6 +135,11 @@ namespace EducUp.View
             {
                 await DisplayAlert("Attenzione!", "Dati obbligatori mancanti", "Ok");
             }
+        }
+
+        private async void CloseButton_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PopPopupAsync();
         }
 
         #endregion
@@ -181,5 +187,6 @@ namespace EducUp.View
         }
 
         #endregion
+
     }
 }

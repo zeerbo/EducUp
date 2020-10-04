@@ -1,4 +1,6 @@
-﻿using EducUp.Model;
+﻿using EducUp.Enumerations;
+using EducUp.Model;
+using EducUp.View;
 using EducUp.ViewModel.Base;
 using System;
 using System.Collections.Generic;
@@ -24,21 +26,54 @@ namespace EducUp.ViewModel
             }
         }
 
+        private bool _addButtonVisible;
+        public bool AddButtonVisible
+        {
+            get => _addButtonVisible;
+            set
+            {
+                _addButtonVisible = value;
+                OnPropertyChanged(nameof(AddButtonVisible));
+            }
+        }
+
         #endregion
 
         #region Methods
 
-        public async Task SetEventList()
+        public async Task SetEventList(EventiListPageMode eventiListPageMode)
         {
-            EventsList = await App.DataService.GetEventListAsync();
+            switch (eventiListPageMode)
+            {
+                case EventiListPageMode.PastEventMode:
+                    EventsList = await App.DataService.GetPastEventListAsync();
+                    break;
+
+                case EventiListPageMode.FutureEventMode:
+                default:
+                    EventsList = await App.DataService.GetFutureEventListAsync();
+                    break;
+            }
         }
 
-        public async Task LoadMoreEvents()
+        public async Task LoadMoreEvents(EventiListPageMode eventiListPageMode)
         {
             Event lastEventLoaded = EventsList.LastOrDefault();
             if (lastEventLoaded != null)
             {
-                ObservableCollection<Event> otherEventsLoaded = await App.DataService.GetNextEventListPageAsync(lastEventLoaded);
+                ObservableCollection<Event> otherEventsLoaded = null;
+                switch (eventiListPageMode)
+                {
+                    case EventiListPageMode.PastEventMode:
+                        otherEventsLoaded = await App.DataService.GetNextPastEventListPageAsync(lastEventLoaded);
+                        break;
+
+                    case EventiListPageMode.FutureEventMode:
+                    default:
+                        otherEventsLoaded = await App.DataService.GetNextFutureEventListPageAsync(lastEventLoaded);
+                        break;
+                }
+
                 if (otherEventsLoaded != null && otherEventsLoaded.Count > 0)
                 {
                     foreach (Event evento in otherEventsLoaded)
@@ -49,6 +84,18 @@ namespace EducUp.ViewModel
             }
         }
 
+        public void SetPropertyPage(EventiListPageMode eventiListPageMode)
+        {
+            if (eventiListPageMode == EventiListPageMode.PastEventMode)
+            {
+                AddButtonVisible = false;
+            }
+            else
+            {
+                AddButtonVisible = App.IsAdminProfile();
+            }
+        }
+        
         #endregion
     }
 }

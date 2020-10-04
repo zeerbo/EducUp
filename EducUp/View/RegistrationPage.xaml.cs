@@ -53,6 +53,8 @@ namespace EducUp.View
                 }
             }
 
+            _vm.User.BirthDate = new DateTimeOffset(_vm.SelectedDate.Year, _vm.SelectedDate.Month, _vm.SelectedDate.Day, 0, 0, 0, TimeSpan.Zero).ToUniversalTime();
+
             if (checkData)
             {
                 bool userExists = await _vm.CheckIfUserExists();

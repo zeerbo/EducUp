@@ -59,7 +59,7 @@
                         <ColumnDefinition Width="0,5*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Text="Data di nascita*" FontSize="18" VerticalTextAlignment="Center" Margin="3,0,0,0" />
-                    <DatePicker x:Name="BirthDatePicker" Grid.Column="1" Date="{Binding User.BirthDate}" FontSize="18" TextColor="Gray" />
+                    <DatePicker x:Name="BirthDatePicker" Grid.Column="1" Date="{Binding SelectedDate}" FontSize="18" TextColor="Gray" />
                 </Grid>
                 <Entry x:Name="ParishEntry" Text="{Binding User.Parish}" Placeholder="Parrocchia*" Style="{StaticResource EntryStyle}"/>
                 <Entry x:Name="MembershipEntry" Text="{Binding User.Membership}" Placeholder="Codice tessera AC" Style="{StaticResource EntryStyle}"/>

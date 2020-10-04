@@ -22,6 +22,7 @@ namespace EducUp.View
         public EventPage(Event evento) : this()
         {
             Vm.Evento = evento;
+            Vm.SetPropertyPage();
         }
 
 

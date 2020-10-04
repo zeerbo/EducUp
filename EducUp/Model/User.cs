@@ -56,8 +56,8 @@ namespace EducUp.Model
             }
         }
 
-        private DateTime _birthDate;
-        public DateTime BirthDate
+        private DateTimeOffset _birthDate;
+        public DateTimeOffset BirthDate
         {
             get { return _birthDate; }
             set

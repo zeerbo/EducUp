@@ -69,6 +69,8 @@ namespace EducUp.View
                 {
                     Vm.User.IsAdmin = AdminCheckBox.IsChecked;
                 }
+
+                Vm.User.BirthDate = new DateTimeOffset(Vm.SelectedDate.Year, Vm.SelectedDate.Month, Vm.SelectedDate.Day, 0, 0, 0, TimeSpan.Zero).ToUniversalTime();
                 
                 result = await Vm.SaveUserAsync();
             }
@@ -83,6 +85,7 @@ namespace EducUp.View
                 await DisplayAlert("Completato!", "Dati salvati con successo", "Ok");
                 Vm.ShowAdminCodeEntry = false;
                 Vm.ModifyMode = false;
+                App.SaveAdminProfile(Vm.User.IsAdmin);
             }
             else
             {

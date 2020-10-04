@@ -22,7 +22,7 @@ namespace EducUp.Converters
                 {
                     result = "D";
                 }
-                else if (type.Equals(typeof(EventListPage)))
+                else if (type.Equals(typeof(EventsListTabbedPage)))
                 {
                     result = "F";
                 }
