@@ -16,16 +16,6 @@ namespace EducUp.ViewModel
         #region Properties
 
         private ObservableCollection<Event> _eventsList;
-        public ObservableCollection<Event> EventsList
-        {
-            get => _eventsList;
-            set
-            {
-                _eventsList = value;
-                OnPropertyChanged(nameof(EventsList));
-            }
-        }
-
 
         private ILookup<DateTime, Event> _groupedEventsList;
         public ILookup<DateTime, Event> GroupedEventsList
@@ -59,21 +49,21 @@ namespace EducUp.ViewModel
             switch (eventiListPageMode)
             {
                 case EventiListPageMode.PastEventMode:
-                    var events = await App.DataService.GetPastEventListAsync();
-                    GroupedEventsList = EventsList.ToLookup(e => e.StartDateTime.Date);
+                    _eventsList = await App.DataService.GetPastEventListAsync();
+                    GroupedEventsList = _eventsList.ToLookup(e => e.StartDateTime.Date);
                     break;
 
                 case EventiListPageMode.FutureEventMode:
                 default:
-                    EventsList = await App.DataService.GetFutureEventListAsync();
-                    GroupedEventsList = EventsList.ToLookup(e => e.StartDateTime.Date);
+                    _eventsList = await App.DataService.GetFutureEventListAsync();
+                    GroupedEventsList = _eventsList.ToLookup(e => e.StartDateTime.Date);
                     break;
             }
         }
 
         public async Task LoadMoreEvents(EventiListPageMode eventiListPageMode)
         {
-            Event lastEventLoaded = EventsList.LastOrDefault();
+            var lastEventLoaded = _eventsList.LastOrDefault();
             if (lastEventLoaded != null)
             {
                 ObservableCollection<Event> otherEventsLoaded = null;
@@ -91,12 +81,12 @@ namespace EducUp.ViewModel
 
                 if (otherEventsLoaded != null && otherEventsLoaded.Count > 0)
                 {
-                    foreach (Event evento in otherEventsLoaded)
+                    foreach(Event evento in otherEventsLoaded)
                     {
-                        EventsList.Add(evento);
+                        _eventsList.Add(evento);
                     }
 
-                    GroupedEventsList = EventsList.ToLookup(e => e.StartDateTime.Date);
+                    GroupedEventsList = _eventsList.ToLookup(e => e.StartDateTime.Date);
                 }
             }
         }

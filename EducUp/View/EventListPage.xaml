@@ -13,7 +13,8 @@
                       AbsoluteLayout.LayoutFlags="All" 
                       ItemsSource="{Binding GroupedEventsList}" 
                       IsGroupingEnabled="True"
-                      RowHeight="80"
+                      HasUnevenRows ="True"
+                      SeparatorColor="{StaticResource MainColor}"
                       Footer="True"
                       ItemTapped="EventListView_ItemTapped"
                       SelectionMode="None">
@@ -26,8 +27,8 @@
                 </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <Grid HeightRequest="80" Padding="10,5,10,5">
+                        <ViewCell Height="80">
+                            <Grid Padding="10,5,10,5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="0.4*" />
