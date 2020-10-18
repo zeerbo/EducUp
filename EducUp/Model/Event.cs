@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Xamarin.Essentials;
@@ -91,16 +92,7 @@ namespace EducUp.Model
             }
         }
 
-        private ObservableCollection<User> _usersList;
-        public ObservableCollection<User> UsersList
-        {
-            get => _usersList;
-            set
-            {
-                _usersList = value;
-                OnPropertyChanged(nameof(UsersList));
-            }
-        }
+        public List<string> UsersList { get; set; }
 
         #endregion
     }

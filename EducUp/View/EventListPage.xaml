@@ -11,29 +11,41 @@
             <ListView x:Name="EventListView" 
                       AbsoluteLayout.LayoutBounds="0,0,1,1" 
                       AbsoluteLayout.LayoutFlags="All" 
-                      ItemsSource="{Binding EventsList}" 
+                      ItemsSource="{Binding GroupedEventsList}" 
+                      IsGroupingEnabled="True"
                       RowHeight="80"
                       Footer="True"
                       ItemTapped="EventListView_ItemTapped"
                       SelectionMode="None">
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="40">
+                            <Label Text="{Binding Key, StringFormat='{0:dd MMMM yyyy}'}" FontSize="20" TextColor="Black" VerticalTextAlignment="Center" Margin="5" />
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid Padding="10,5,10,5">
+                            <Grid HeightRequest="80" Padding="10,5,10,5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="0.4*" />
                                 </Grid.RowDefinitions>
-                                <Label Grid.Row="0" Text="{Binding Titolo}" TextColor="Black" FontSize="18" MaxLines="2" FontAttributes="Bold" LineBreakMode="TailTruncation" />
-                                <Label Grid.Row="1" TextColor="Black" FontAttributes="Italic" LineBreakMode="TailTruncation" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="60" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Titolo}" TextColor="Black" FontSize="18" MaxLines="2" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                                <Label Grid.Row="1" Grid.Column="0">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding StartDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" />
-                                            <Span Text=" - " />
-                                            <Span Text="{Binding EndDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" />
+                                            <Span Text="Luogo: " />
+                                            <Span Text="{Binding Location}" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
+                                <Label Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" TextColor="Black" Text="{Binding StartDateTime, StringFormat='{0:dd MMM HH:mm}'}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

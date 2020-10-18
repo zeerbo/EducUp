@@ -16,6 +16,7 @@ namespace EducUp.Common
         Task<bool> DeleteUserAsync(User user);
         Task<User> GetUserAsync(string email);
         Task<ObservableCollection<User>> GetUserListAsync();
+        Task<ObservableCollection<User>> GetUsersListByUsernameListAsync(List<string> usernameLists);
 
         #endregion
 
@@ -30,6 +31,7 @@ namespace EducUp.Common
         Task<ObservableCollection<Event>> GetNextFutureEventListPageAsync(Event evento);
         Task<ObservableCollection<Event>> GetPastEventListAsync();
         Task<ObservableCollection<Event>> GetNextPastEventListPageAsync(Event evento);
+        Task<ObservableCollection<Event>> GetEventListByParticipantUsername(string username);
 
         #endregion
     }

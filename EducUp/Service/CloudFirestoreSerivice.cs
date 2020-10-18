@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Diagnostics.Tracing;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text;
@@ -151,21 +152,24 @@ namespace EducUp.Service
             return result;
         }
 
-        public async Task<ObservableCollection<User>> GetUserListForEvent(Event evento)
+        public async Task<ObservableCollection<User>> GetUsersListByUsernameListAsync(List<string> usernameLists)
         {
             ObservableCollection<User> result = new ObservableCollection<User>();
 
-            if (evento != null)
+            if (usernameLists != null && usernameLists.Count > 0)
             {
                 try
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetCollection(nameof(User)).GetDocumentsAsync();
+                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(User)).GetDocumentsAsync();
                     foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                     {
                         if (documentSnapshot.Exists)
                         {
                             User newUser = documentSnapshot.ToObject<User>();
-                            result.Add(newUser);
+                            if (usernameLists.Contains(newUser.Email))
+                            {
+                                result.Add(newUser); 
+                            }
                         }
                     }
                 }
@@ -173,7 +177,7 @@ namespace EducUp.Service
                 {
                     result = new ObservableCollection<User>();
                     App.LogException(e);
-                }
+                } 
             }
 
             return result;
@@ -398,6 +402,37 @@ namespace EducUp.Service
             {
                 result = null;
                 App.LogException(e);
+            }
+
+            return result;
+        }
+
+        public async Task<ObservableCollection<Event>> GetEventListByParticipantUsername(string username)
+        {
+            ObservableCollection<Event> result = new ObservableCollection<Event>();
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                try
+                {
+                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                                                                            .WhereArrayContains(nameof(Event.UsersList), username)
+                                                                            .OrderBy(nameof(Event.StartDateTime), true)
+                                                                            .GetDocumentsAsync();
+                    foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                    {
+                        if (documentSnapshot.Exists)
+                        {
+                            Event newEvent = documentSnapshot.ToObject<Event>();
+                            result.Add(newEvent);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    result = null;
+                    App.LogException(e);
+                } 
             }
 
             return result;

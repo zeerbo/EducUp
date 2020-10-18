@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage  xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+                  xmlns="http://xamarin.com/schemas/2014/forms"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+                  xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup" 
+                  xmlns:Vm="clr-namespace:EducUp.ViewModel"
+                  x:Class="EducUp.View.AddParticipantsPopupPage"
+                  BackgroundInputTransparent="False"
+                  CloseWhenBackgroundIsClicked="True"
+                  IsAnimationEnabled="True">
+    <pages:PopupPage.BindingContext>
+        <Vm:AddParticipantsPopupPageViewModel x:Name="Vm" />
+    </pages:PopupPage.BindingContext>
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation PositionIn="Bottom" PositionOut="Bottom"/>
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Content>
+        <Frame CornerRadius="5" VerticalOptions="End">
+            <StackLayout Padding="10" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                <Button x:Name="ViewParticipantsButton" Text="Visualizza partecipanti" Style="{StaticResource ButtonStyle}" Clicked="ViewParticipantsButton_Clicked"/>
+                <Button x:Name="AddParticipantButton" Text="Aggiungi partecipante" Style="{StaticResource ButtonStyle}" Clicked="AddParticipantButton_Clicked"/>
+                <Button x:Name="AddGroupParticipantsButton" Text="Aggiungi gruppo di partecipanti" Style="{StaticResource ButtonStyle}" Clicked="AddGroupParticipantsButton_Clicked"/>
+            </StackLayout>
+        </Frame>
+    </pages:PopupPage.Content>
+</pages:PopupPage>

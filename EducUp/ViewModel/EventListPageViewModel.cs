@@ -26,6 +26,19 @@ namespace EducUp.ViewModel
             }
         }
 
+
+        private ILookup<DateTime, Event> _groupedEventsList;
+        public ILookup<DateTime, Event> GroupedEventsList
+        {
+            get => _groupedEventsList;
+            set
+            {
+                _groupedEventsList = value;
+                OnPropertyChanged(nameof(GroupedEventsList));
+            }
+        }
+
+
         private bool _addButtonVisible;
         public bool AddButtonVisible
         {
@@ -46,12 +59,14 @@ namespace EducUp.ViewModel
             switch (eventiListPageMode)
             {
                 case EventiListPageMode.PastEventMode:
-                    EventsList = await App.DataService.GetPastEventListAsync();
+                    var events = await App.DataService.GetPastEventListAsync();
+                    GroupedEventsList = EventsList.ToLookup(e => e.StartDateTime.Date);
                     break;
 
                 case EventiListPageMode.FutureEventMode:
                 default:
                     EventsList = await App.DataService.GetFutureEventListAsync();
+                    GroupedEventsList = EventsList.ToLookup(e => e.StartDateTime.Date);
                     break;
             }
         }
@@ -79,7 +94,9 @@ namespace EducUp.ViewModel
                     foreach (Event evento in otherEventsLoaded)
                     {
                         EventsList.Add(evento);
-                    } 
+                    }
+
+                    GroupedEventsList = EventsList.ToLookup(e => e.StartDateTime.Date);
                 }
             }
         }

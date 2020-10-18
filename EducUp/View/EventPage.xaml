@@ -19,12 +19,17 @@
             <Setter Property="HorizontalTextAlignment" Value="Start" />
             <Setter Property="Margin" Value="10,0,0,0" />
         </Style>
+
+        <Style TargetType="BoxView" x:Key="SeparatorBoxViewStyle">
+            <Setter Property="Color" Value="LightGray" />
+            <Setter Property="Margin" Value="0,10,0,10" />
+        </Style>
     </ContentPage.Resources> 
     <ContentPage.Content>
         <AbsoluteLayout>
             <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
                 <StackLayout Spacing="1" BackgroundColor="LightGray" Orientation="Vertical">
-                    <ContentView BackgroundColor="White">
+                    <ContentView BackgroundColor="White" >
                         <Grid Padding="10,0,10,5" RowSpacing="0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -38,9 +43,9 @@
                     <ContentView BackgroundColor="White" VerticalOptions="FillAndExpand">
                         <StackLayout Padding="5">
                             <Label Text="Inizio" Style="{StaticResource LabelFieldStyle}" />
-                            <Label Text="{Binding Evento.StartDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" Style="{StaticResource LabelDataStyle}" />
+                            <Label Text="{Binding Evento.StartDateTime, StringFormat='{0:dd MMMM yyyy HH:mm}'}" Style="{StaticResource LabelDataStyle}" />
                             <Label Text="Fine" Style="{StaticResource LabelFieldStyle}" />
-                            <Label Text="{Binding Evento.EndDateTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}" Style="{StaticResource LabelDataStyle}" />
+                            <Label Text="{Binding Evento.EndDateTime, StringFormat='{0:dd MMMM yyyy HH:mm}'}" Style="{StaticResource LabelDataStyle}" />
                             <Label Text="Luogo" Style="{StaticResource LabelFieldStyle}" />
                             <Label Text="{Binding Evento.Location}" Style="{StaticResource LabelDataStyle}" />
                             <Label Text="Passi" Style="{StaticResource LabelFieldStyle}" />
@@ -54,13 +59,17 @@
                 <Grid ColumnSpacing="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.3333*" />
+                        <ColumnDefinition Width="1" />
                         <ColumnDefinition Width="0.3333*" />
+                        <ColumnDefinition Width="1" />
                         <ColumnDefinition Width="0.3333*" />
                     </Grid.ColumnDefinitions>
 
                     <Button x:Name="ModifyButton" Grid.Column="0" IsEnabled="{Binding IsModifyButtonEnabled}" Text="E" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
-                    <Button x:Name="ParticipantsButton" Grid.Column="1" IsEnabled="{Binding IsAddParticipantsButtonEnabled}" Text="C" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ParticipantsButton_Clicked" />
-                    <Button x:Name="DeleteButton" Grid.Column="2" IsEnabled="{Binding IsDeleteButtonEnabled}"  Text="I" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="DeleteButton_Clicked" />
+                    <BoxView Grid.Column="1" Style="{StaticResource SeparatorBoxViewStyle}"/>
+                    <Button x:Name="ParticipantsButton" Grid.Column="2" IsEnabled="{Binding IsAddParticipantsButtonEnabled}" Text="C" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ParticipantsButton_Clicked" />
+                    <BoxView Grid.Column="3" Style="{StaticResource SeparatorBoxViewStyle}"/>
+                    <Button x:Name="DeleteButton" Grid.Column="4" IsEnabled="{Binding IsDeleteButtonEnabled}"  Text="I" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="DeleteButton_Clicked" />
                 </Grid>
             </Frame>
         </AbsoluteLayout>

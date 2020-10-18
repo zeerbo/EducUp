@@ -40,9 +40,13 @@ namespace EducUp.View
             }
         }
 
-        private void ParticipantsButton_Clicked(object sender, EventArgs e)
+        private async void ParticipantsButton_Clicked(object sender, EventArgs e)
         {
-
+            AddParticipantsPopupPage addParticipantsPopupPage = new AddParticipantsPopupPage(Vm.Evento);
+            if (addParticipantsPopupPage != null)
+            {
+                await Navigation.PushPopupAsync(addParticipantsPopupPage);
+            }
         }
 
         private async void DeleteButton_Clicked(object sender, EventArgs e)
