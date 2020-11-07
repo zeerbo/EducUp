@@ -112,6 +112,8 @@ namespace EducUp.Model
             }
         }
 
+        public string PresenceId { get; set; }
+
         #endregion
 
 

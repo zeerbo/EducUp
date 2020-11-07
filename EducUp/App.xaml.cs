@@ -16,6 +16,7 @@ namespace EducUp
     {
         public static IDataService DataService;
         public static IAuthService AuthService;
+        public static IPresenceNotificationService PresenceNotificationService;
 
         public App()
         {
@@ -24,7 +25,8 @@ namespace EducUp
             if (!DesignMode.IsDesignModeEnabled)
             {
                 DataService = CloudFirestoreSerivice.GetInstance();
-                AuthService = FirebaseAuthenticationService.GetInstance(); 
+                AuthService = FirebaseAuthenticationService.GetInstance();
+                PresenceNotificationService = DependencyService.Get<IPresenceNotificationService>();
             }
 
             string username = GetUserEmail();
@@ -39,18 +41,31 @@ namespace EducUp
                 MainPage = new LoginPage();
             }
         }
+        
+        
+        #region Overrides
 
         protected override void OnStart()
         {
         }
 
-        protected override void OnSleep()
+        protected override async void OnSleep()
         {
+            await PresenceNotificationService.UnPublishPresenceNotificationAsync();
         }
 
-        protected override void OnResume()
+        protected override async void OnResume()
         {
+            string presenceId = GetPresenceId();
+            if (PresenceNotificationService != null && !string.IsNullOrEmpty(presenceId))
+            {
+                await PresenceNotificationService.PublishPresenceNotificationAsync(presenceId);
+            }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Logga sul canale di Debug l'eccezione passata come parametro.
@@ -64,7 +79,7 @@ namespace EducUp
             Debug.WriteLine(e.Message);
             Debug.WriteLine(e.StackTrace);
         }
-    
+
         public static async Task<bool> LoginUserAync(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
@@ -86,12 +101,12 @@ namespace EducUp
 
             return result;
         }
-    
+
         public static string GetUserEmail()
         {
             return Preferences.Get(Constants.EMAIL_PREFERENCE, string.Empty);
         }
-    
+
         public static string GetNewGuid()
         {
             string result = string.Empty;
@@ -108,7 +123,7 @@ namespace EducUp
 
             return result;
         }
-    
+
         public static void SaveAdminProfile(bool isAdminProfile)
         {
             Preferences.Set(Constants.ADMIN_PREFERENCE, isAdminProfile);
@@ -118,5 +133,17 @@ namespace EducUp
         {
             return Preferences.Get(Constants.ADMIN_PREFERENCE, false);
         }
+
+        public static void SaveUserPresenceId(string presenceId)
+        {
+            Preferences.Set(Constants.PRESENCE_ID, presenceId);
+        }
+
+        public static string GetPresenceId()
+        {
+            return Preferences.Get(Constants.PRESENCE_ID, string.Empty);
+        }
+
+        #endregion
     }
 }

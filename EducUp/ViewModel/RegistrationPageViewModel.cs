@@ -87,7 +87,7 @@ namespace EducUp.ViewModel
             {
                 resultAuth = await CreateUserAsync();
             }
-            
+
             if (resultAuth)
             {
                 App.SaveCredentials(User.Email, password);
@@ -104,7 +104,18 @@ namespace EducUp.ViewModel
 
         public async Task<bool> CreateUserAsync()
         {
-            return await App.DataService.CreateUserAsync(User).ConfigureAwait(false);
+            bool result = false;
+            Guid presenceIdGuid = Guid.NewGuid();
+            string presenceId = presenceIdGuid.ToString();
+            User.PresenceId = presenceId;
+
+            result = await App.DataService.CreateUserAsync(User).ConfigureAwait(false);
+            if (result)
+            {
+                App.SaveUserPresenceId(presenceId);
+            }
+
+            return result;
         }
 
         #endregion
