@@ -2,14 +2,23 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:renders="clr-namespace:EducUp.Renders"
              mc:Ignorable="d"
              x:Class="EducUp.View.StepPage">
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout>
-                <Label Text="Passi" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
-            </StackLayout>
+            <renders:CircularProgressBar Total="60" 
+                                         Progress="20"
+                                         AvailableStrokeColor="{StaticResource MainColor}" 
+                                         ProgressStrokeColor="{StaticResource BackgroundColor}"
+                                         WidthRequest="300"
+                                         HeightRequest="300"
+                                         StrokeWidth="15"
+                                         InnerSpaceWidth="5"
+                                         Text="20/60"
+                                         TextSize="200"
+                                         TextMargin="5"/>
+            <Label Text="Passi" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

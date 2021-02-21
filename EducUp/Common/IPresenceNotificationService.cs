@@ -7,12 +7,12 @@ namespace EducUp.Common
 {
     public interface IPresenceNotificationService
     {
-        Task<bool> PublishPresenceNotificationAsync(string messageString);
+        Task PublishPresenceNotificationAsync(string messageString);
         
-        Task<bool> UnPublishPresenceNotificationAsync();
+        Task UnpublishPresenceNotificationAsync();
 
         Task SubscribeMessagesAsync();
 
-        Task UnsubscriberMessageAsync();
+        Task UnsubscribePresenceNotificationAsync();
     }
 }

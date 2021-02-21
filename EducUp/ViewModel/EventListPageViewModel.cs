@@ -40,6 +40,17 @@ namespace EducUp.ViewModel
             }
         }
 
+        private bool _loadMoreBusy;
+        public bool LoadMoreBusy
+        {
+            get => _loadMoreBusy;
+            set
+            {
+                _loadMoreBusy = value;
+                OnPropertyChanged(nameof(LoadMoreBusy));
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -48,16 +59,23 @@ namespace EducUp.ViewModel
         {
             switch (eventiListPageMode)
             {
+                case EventiListPageMode.UserEventMode:
+                    _eventsList = await App.DataService.GetEventListByParticipantUsername(App.GetUserEmail());
+                    break;
+
                 case EventiListPageMode.PastEventMode:
                     _eventsList = await App.DataService.GetPastEventListAsync();
-                    GroupedEventsList = _eventsList.ToLookup(e => e.StartDateTime.Date);
                     break;
 
                 case EventiListPageMode.FutureEventMode:
                 default:
                     _eventsList = await App.DataService.GetFutureEventListAsync();
-                    GroupedEventsList = _eventsList.ToLookup(e => e.StartDateTime.Date);
                     break;
+            }
+
+            if(_eventsList != null)
+            {
+                GroupedEventsList = _eventsList?.ToLookup(e => e.StartDateTime.Date);
             }
         }
 
@@ -69,6 +87,10 @@ namespace EducUp.ViewModel
                 ObservableCollection<Event> otherEventsLoaded = null;
                 switch (eventiListPageMode)
                 {
+                    case EventiListPageMode.UserEventMode:
+                        otherEventsLoaded = await App.DataService.GetNextEventListByParticipantUsername(App.GetUserEmail(), lastEventLoaded);
+                        break;
+
                     case EventiListPageMode.PastEventMode:
                         otherEventsLoaded = await App.DataService.GetNextPastEventListPageAsync(lastEventLoaded);
                         break;
@@ -93,13 +115,17 @@ namespace EducUp.ViewModel
 
         public void SetPropertyPage(EventiListPageMode eventiListPageMode)
         {
-            if (eventiListPageMode == EventiListPageMode.PastEventMode)
+            switch (eventiListPageMode)
             {
-                AddButtonVisible = false;
-            }
-            else
-            {
-                AddButtonVisible = App.IsAdminProfile();
+                case EventiListPageMode.UserEventMode:
+                case EventiListPageMode.PastEventMode:
+                    AddButtonVisible = false;
+                    break;
+
+                case EventiListPageMode.FutureEventMode:
+                default:
+                    AddButtonVisible = App.IsAdminProfile();
+                    break;
             }
         }
         

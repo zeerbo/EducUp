@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text;
@@ -112,6 +113,31 @@ namespace EducUp.Service
                 try
                 {
                     IDocumentSnapshot documentSnapshot = await _firestore.GetCollection(nameof(User)).GetDocument(email).GetDocumentAsync();
+                    if (documentSnapshot.Exists)
+                    {
+                        result = documentSnapshot.ToObject<User>();
+                    }
+                }
+                catch (Exception e)
+                {
+                    result = null;
+                    App.LogException(e);
+                }
+            }
+
+            return result;
+        }
+
+        public async Task<User> GetUserByPresenceIdAsync(string presenceId)
+        {
+            User result = null;
+
+            if (!string.IsNullOrEmpty(presenceId))
+            {
+                try
+                {
+                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(User)).WhereEqualsTo(nameof(User.PresenceId), presenceId).GetDocumentsAsync();
+                    IDocumentSnapshot documentSnapshot = querySnapshot.Documents.FirstOrDefault();
                     if (documentSnapshot.Exists)
                     {
                         result = documentSnapshot.ToObject<User>();
@@ -418,6 +444,7 @@ namespace EducUp.Service
                     IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
                                                                             .WhereArrayContains(nameof(Event.UsersList), username)
                                                                             .OrderBy(nameof(Event.StartDateTime), true)
+                                                                            .LimitTo(20)
                                                                             .GetDocumentsAsync();
                     foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                     {
@@ -433,6 +460,40 @@ namespace EducUp.Service
                     result = null;
                     App.LogException(e);
                 } 
+            }
+
+            return result;
+        }
+
+        public async Task<ObservableCollection<Event>> GetNextEventListByParticipantUsername(string username, Event evento)
+        {
+            ObservableCollection<Event> result = new ObservableCollection<Event>();
+
+            try
+            {
+                IDocumentSnapshot documentSnapshotLast = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetDocumentAsync();
+                if (documentSnapshotLast != null)
+                {
+                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                                                                           .WhereArrayContains(nameof(Event.UsersList), username)
+                                                                           .OrderBy(nameof(Event.StartDateTime), true)
+                                                                           .StartAfter(documentSnapshotLast)
+                                                                           .LimitTo(20)
+                                                                           .GetDocumentsAsync();
+                    foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                    {
+                        if (documentSnapshot.Exists)
+                        {
+                            Event newEvent = documentSnapshot.ToObject<Event>();
+                            result.Add(newEvent);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result = null;
+                App.LogException(e);
             }
 
             return result;

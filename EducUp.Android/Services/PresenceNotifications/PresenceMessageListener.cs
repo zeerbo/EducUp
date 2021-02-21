@@ -9,6 +9,7 @@ using Android.Gms.Nearby.Messages;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Xamarin.Forms;
 
 namespace EducUp.Droid.Services.PresenceNotifications
 {
@@ -16,14 +17,15 @@ namespace EducUp.Droid.Services.PresenceNotifications
     {
         public override void OnFound(Message message)
         {
-            string messageString = string.Empty;
+            string presenceId = string.Empty;
 
             if (message != null)
             {
                 try
                 {
-                    messageString = Encoding.UTF8.GetString(message.GetContent());
-                    Console.Out.WriteLine(messageString);
+                    presenceId = Encoding.UTF8.GetString(message.GetContent());
+                    MessagingCenter.Send(this, "PRESENCE_ID_RECEIVED", presenceId);
+                    Console.Out.WriteLine(presenceId);
                 }
                 catch (Exception e)
                 {

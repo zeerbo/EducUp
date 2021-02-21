@@ -11,6 +11,25 @@
             <On Platform="Android" Value="EducUp.ttf#"/>
             <On Platform="iOS" Value="EducUp" />
         </OnPlatform>
+        
+        <!--#region Icons-->
+
+        <x:String x:Key="left_arrow">A</x:String>
+        <x:String x:Key="hamburger_menu">B</x:String>
+        <x:String x:Key="user_profile">C</x:String>
+        <x:String x:Key="home">D</x:String>
+        <x:String x:Key="pencil">E</x:String>
+        <x:String x:Key="calendar">F</x:String>
+        <x:String x:Key="add">G</x:String>
+        <x:String x:Key="arrwohead_down">H</x:String>
+        <x:String x:Key="trash">I</x:String>
+        <x:String x:Key="save">J</x:String>
+        <x:String x:Key="group_meeting">K</x:String>
+        <x:String x:Key="like">L</x:String>
+        <x:String x:Key="group_add">M</x:String>
+        <x:String x:Key="user_add">N</x:String>
+        
+        <!--#endregion-->
 
         <!--#region Colors -->
         <Color x:Key="BackgroundColor">#ffe277</Color>
@@ -50,6 +69,12 @@
             <Setter Property="Margin" Value="15,0,15,0" />
             <Setter Property="FontSize" Value="18" />
         </Style>
+
+        <Style TargetType="BoxView" x:Key="SeparatorBoxViewStyle">
+            <Setter Property="Color" Value="LightGray" />
+            <Setter Property="Margin" Value="0,10,0,10" />
+        </Style>
+        
         <!--#endregion-->
         
         <!--#region-->
@@ -67,7 +92,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Column="0" Text="A" TextColor="White" FontSize="18" FontAttributes="Bold" Style="{StaticResource LabelIconStyle}" Margin="5,0,0,0">
+                    <Label Grid.Column="0" Text="{x:StaticResource left_arrow}" TextColor="White" FontSize="18" FontAttributes="Bold" Style="{StaticResource LabelIconStyle}" Margin="5,0,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BackButtonPressedCommand}" />
                         </Label.GestureRecognizers>

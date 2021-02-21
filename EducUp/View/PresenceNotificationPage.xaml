@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EducUp.View.PresenceNotificationPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid Padding="10" BackgroundColor="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Text="Invia notifica di presenza" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <Button x:Name="PubblishMessageButton" Grid.Row="1" Text="Invia notifica" IsVisible="True" Style="{StaticResource ButtonStyle}" Clicked="PubblishMessageButton_Clicked" />
+                <ActivityIndicator x:Name="ActivityIndicator" Grid.Row="1" Color="{StaticResource MainColor}" IsVisible="False" IsRunning="False" >
+                    <ActivityIndicator.Triggers>
+                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding Source={x:Reference PubblishMessageButton}, Path=IsVisible}" Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                            <Setter Property="IsRunning" Value="True" />
+                        </DataTrigger>
+                    </ActivityIndicator.Triggers>
+                </ActivityIndicator>
+                <Label x:Name="InfoLable" Grid.Row="2" IsVisible="False">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Attendi ancora qualche momento avendo l'accortezza di non spegnere lo schermo del dispositio per consentire di registrare la tua presenza, poi torna all'app premendo indietro" />
+                            <Span Text="\n" />
+                            <Span Text="In questo momento la tua app sta inviando una notifica per segnalare la tua presenza ad un evento." />
+                            <Span Text="\n" />
+                            <Span Text="La comunicazione con gli altri dispositivi avviene nel pieno rispetto della tua privacy.\nIl codice inviato non è generato dall'app in modo del tutto casuale alla registrazione e non contiene nessun dato sensibile che possa essere ricondotto a te." />
+                        </FormattedString>
+                    </Label.FormattedText>
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference PubblishMessageButton}, Path=IsVisible}" Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

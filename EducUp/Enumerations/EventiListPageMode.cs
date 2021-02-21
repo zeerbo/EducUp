@@ -7,6 +7,7 @@ namespace EducUp.Enumerations
     public enum EventiListPageMode
     {
         FutureEventMode,
-        PastEventMode
+        PastEventMode,
+        UserEventMode
     }
 }

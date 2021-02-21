@@ -15,69 +15,44 @@ using EducUp.Common;
 using EducUp.Droid.Services;
 using EducUp.Droid.Services.PresenceNotifications;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 
 [assembly: Dependency(typeof(PresenceNotificationsManager))]
 namespace EducUp.Droid.Services.PresenceNotifications
 {
     public class PresenceNotificationsManager : IPresenceNotificationService
     {
-        private Message _message;
-        private PresenceMessageListener _messageListener;
+        private Android.Gms.Nearby.Messages.Message _message;
+        private MessageListener _messageListener;
 
-        public async Task<bool> PublishPresenceNotificationAsync(string messageString)
+        public async Task PublishPresenceNotificationAsync(string messageString)
         {
-            bool result = true;
-
-            try
-            {
-                byte[] messageBytes = Encoding.UTF8.GetBytes(messageString);
-                _message = new Message(messageBytes);
-                await NearbyClass.GetMessagesClient(Android.App.Application.Context).PublishAsync(_message);
-            }
-            catch (Exception)
-            {
-                result = false;
-            }
-
-            return result;
+            //Intent intent = new Intent(Android.App.Application.Context, typeof(PresenceNotificationSenderActivity));
+            //intent.PutExtra("presenceId", messageString);
+            //intent.SetFlags(ActivityFlags.NewTask);
+            //Android.App.Application.Context.StartActivity(intent);string messageString = Intent.GetStringExtra("presenceId");
+            byte[] messageByte = Encoding.UTF8.GetBytes(messageString);
+            _message = new Android.Gms.Nearby.Messages.Message(messageByte);
+            await NearbyClass.GetMessagesClient(MainActivity.CurrentMainActivity).PublishAsync(_message);
         }
 
-        public async Task<bool> UnPublishPresenceNotificationAsync()
+        public async Task UnpublishPresenceNotificationAsync()
         {
-            bool result = true;
-
-            if(_message != null)
-            {
-                try
-                {
-                    await NearbyClass.GetMessagesClient(Android.App.Application.Context).UnpublishAsync(_message);
-                }
-                catch
-                {
-                    result = false;
-                }
-            }
-
-            return result;
+            await NearbyClass.GetMessagesClient(MainActivity.CurrentMainActivity).UnpublishAsync(_message);
         }
 
         public async Task SubscribeMessagesAsync()
         {
-            SubscribeOptions.Builder builder = new SubscribeOptions.Builder();
-            builder.SetStrategy(Strategy.BleOnly);
-            SubscribeOptions subscribeOptions = builder.Build();
-
+            //Intent intent = new Intent(Android.App.Application.Context, typeof(PresenceNotificationReceiverActivity));
+            //intent.SetFlags(ActivityFlags.NewTask);
+            //Android.App.Application.Context.StartActivity(intent);
             _messageListener = new PresenceMessageListener();
-
-            await NearbyClass.GetMessagesClient(Android.App.Application.Context).SubscribeAsync(_messageListener, subscribeOptions);
+            await NearbyClass.GetMessagesClient(MainActivity.CurrentMainActivity).SubscribeAsync(_messageListener);
         }
 
-        public async Task UnsubscriberMessageAsync()
+        public async Task UnsubscribePresenceNotificationAsync()
         {
-            if(_messageListener != null)
-            {
-                await NearbyClass.GetMessagesClient(Android.App.Application.Context).UnsubscribeAsync(_messageListener);
-            }
+            await NearbyClass.GetMessagesClient(MainActivity.CurrentMainActivity).UnsubscribeAsync(_messageListener);
         }
     }
 }

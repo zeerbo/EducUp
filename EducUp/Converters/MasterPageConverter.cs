@@ -18,13 +18,17 @@ namespace EducUp.Converters
                 {
                     result = "C";
                 }
-                else if (type.Equals(typeof(StepPage)))
+                else if (type.Equals(typeof(HomeTabbedPage)))
                 {
                     result = "D";
                 }
                 else if (type.Equals(typeof(EventsListTabbedPage)))
                 {
                     result = "F";
+                }
+                else if (type.Equals(typeof(PresenceNotificationPage)))
+                {
+                    result = "L";
                 }
             }
 

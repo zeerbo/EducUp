@@ -16,7 +16,6 @@ namespace EducUp
     {
         public static IDataService DataService;
         public static IAuthService AuthService;
-        public static IPresenceNotificationService PresenceNotificationService;
 
         public App()
         {
@@ -26,7 +25,6 @@ namespace EducUp
             {
                 DataService = CloudFirestoreSerivice.GetInstance();
                 AuthService = FirebaseAuthenticationService.GetInstance();
-                PresenceNotificationService = DependencyService.Get<IPresenceNotificationService>();
             }
 
             string username = GetUserEmail();
@@ -51,19 +49,16 @@ namespace EducUp
 
         protected override async void OnSleep()
         {
-            await PresenceNotificationService.UnPublishPresenceNotificationAsync();
+            await Current.SavePropertiesAsync();
         }
 
-        protected override async void OnResume()
+        protected override void OnResume()
         {
-            string presenceId = GetPresenceId();
-            if (PresenceNotificationService != null && !string.IsNullOrEmpty(presenceId))
-            {
-                await PresenceNotificationService.PublishPresenceNotificationAsync(presenceId);
-            }
+            
         }
 
         #endregion
+
 
         #region Methods
 
@@ -82,10 +77,14 @@ namespace EducUp
 
         public static async Task<bool> LoginUserAync(string email, string password)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-                return false;
+            bool result = false;
 
-            return await AuthService.SignInWhitEmailAndPassword(email, password);
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+            {
+                result = await AuthService.SignInWhitEmailAndPassword(email, password);
+            }
+            
+            return result;
         }
 
         public static bool SaveCredentials(string email, string password)

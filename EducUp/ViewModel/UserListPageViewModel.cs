@@ -1,9 +1,11 @@
-﻿using EducUp.Model;
+﻿using EducUp.Enumerations;
+using EducUp.Model;
 using EducUp.ViewModel.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Tracing;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -46,8 +48,16 @@ namespace EducUp.ViewModel
             {
                 _modifyMode = value;
                 OnPropertyChanged(nameof(ModifyMode));
+                OnPropertyChanged(nameof(SaveButtonVisible));
+                OnPropertyChanged(nameof(ModifyFrameVisible));
             }
         }
+
+        public bool SaveButtonVisible => ModifyMode;
+        
+        public bool ModifyFrameVisible => !ModifyMode;
+
+        public ObservableCollection<User> UsersToAdd { get; set; }
 
         public Command<object> DeleteUserCommand { get; set; }
 
@@ -60,6 +70,7 @@ namespace EducUp.ViewModel
             Title = "Lista Partecipanti";
             _deletedUsersList = new List<User>();
             DeleteUserCommand = new Command<object>(DeleteUserFromList);
+            UsersToAdd = new ObservableCollection<User>();
         }
 
         #endregion
@@ -68,7 +79,7 @@ namespace EducUp.ViewModel
 
         public async Task SetDataAsync()
         {
-            if(Evento != null)
+            if(Evento != null && UsersList == null)
             {
                 UsersList = await App.DataService.GetUsersListByUsernameListAsync(Evento.UsersList);
             }
@@ -111,6 +122,94 @@ namespace EducUp.ViewModel
                 UsersList.Remove(user);
                 _deletedUsersList.Add(user);
             }
+        }
+
+        public async Task<AddParticipantResultEnum> AddParticipant(string username)
+        {
+            AddParticipantResultEnum result = AddParticipantResultEnum.Fail;
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                username = username.Trim();
+                User user = await App.DataService.GetUserAsync(username);
+
+                if (user != null)
+                {
+                    result = AddParticipantToEventUserList(username);
+                    if (result == AddParticipantResultEnum.Success)
+                    {
+                        bool resultPersistance = await App.DataService.UpdateEventAsync(Evento);
+                        if (resultPersistance)
+                        {
+                            UsersList.Add(user);
+                            Evento.UsersList.Add(user.Email);
+                            result = AddParticipantResultEnum.Success; 
+                        }
+                        else
+                        {
+                            result = AddParticipantResultEnum.Fail;
+                        }
+                    }
+                }
+                else
+                {
+                    result = AddParticipantResultEnum.UserNotExists;
+                }
+            }
+
+            return result;
+        }
+
+        public async Task ManageAddGroupParticipants()
+        {
+            if(UsersToAdd != null && UsersToAdd.Count > 0)
+            {
+                if(UsersList == null)
+                {
+                    UsersList = new ObservableCollection<User>();
+                }
+
+                foreach (User user in UsersToAdd)
+                {
+                    if (!UsersList.Any(u => u.Email.Equals(user.Email)))
+                    {
+                        AddParticipantResultEnum result = AddParticipantToEventUserList(user.Email);
+                        if (result == AddParticipantResultEnum.Success)
+                        {
+                            UsersList.Add(user);
+                        }
+                    }
+                }
+
+                await App.DataService.UpdateEventAsync(Evento);
+            }
+        }
+
+        #endregion
+
+
+        #region Private Methods
+
+        private AddParticipantResultEnum AddParticipantToEventUserList(string username)
+        {
+            AddParticipantResultEnum result = AddParticipantResultEnum.Fail;
+
+            if (Evento.UsersList == null)
+            {
+                Evento.UsersList = new List<string>();
+            }
+
+            if (!Evento.UsersList.Contains(username))
+            {
+                Evento.UsersList.Add(username);
+                result = AddParticipantResultEnum.Success;
+            }
+            else
+            {
+                result = AddParticipantResultEnum.UserAlreadyAdded;
+            }
+
+            return result;
         }
 
         #endregion

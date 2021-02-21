@@ -6,21 +6,29 @@
                   xmlns:Vm="clr-namespace:EducUp.ViewModel"
                   x:Class="EducUp.View.AddParticipantsPopupPage"
                   BackgroundInputTransparent="False"
-                  CloseWhenBackgroundIsClicked="True"
+                  CloseWhenBackgroundIsClicked="False"
                   IsAnimationEnabled="True">
     <pages:PopupPage.BindingContext>
         <Vm:AddParticipantsPopupPageViewModel x:Name="Vm" />
     </pages:PopupPage.BindingContext>
-    <pages:PopupPage.Animation>
-        <animations:ScaleAnimation PositionIn="Bottom" PositionOut="Bottom"/>
-    </pages:PopupPage.Animation>
     <pages:PopupPage.Content>
-        <Frame CornerRadius="5" VerticalOptions="End">
-            <StackLayout Padding="10" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                <Button x:Name="ViewParticipantsButton" Text="Visualizza partecipanti" Style="{StaticResource ButtonStyle}" Clicked="ViewParticipantsButton_Clicked"/>
-                <Button x:Name="AddParticipantButton" Text="Aggiungi partecipante" Style="{StaticResource ButtonStyle}" Clicked="AddParticipantButton_Clicked"/>
-                <Button x:Name="AddGroupParticipantsButton" Text="Aggiungi gruppo di partecipanti" Style="{StaticResource ButtonStyle}" Clicked="AddGroupParticipantsButton_Clicked"/>
-            </StackLayout>
+        <Frame BackgroundColor="White" VerticalOptions="Center" CornerRadius="5" HasShadow="True">
+            <Grid Padding="5" VerticalOptions="Center" HorizontalOptions="FillAndExpand" RowSpacing="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="80" />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.7*" />
+                    <ColumnDefinition Width="0.3*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="Ricerca utenti ..." FontSize="20" TextColor="{StaticResource MainColor}" FontAttributes="Bold" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                <ActivityIndicator Grid.Row="0" Grid.Column="1" HeightRequest="50" Color="{StaticResource MainColor}" IsRunning="{Binding ActivityIndicatorRunning}" IsVisible="{Binding ActivityIndicatorRunning}" />
+                <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding UserFoundList.Count}" FontSize="40" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" TextColor="Black" />
+                <Button x:Name="AddParticipantsButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="Aggiungi partecipanti" Style="{StaticResource ButtonStyle}" Clicked="AddParticipantsButton_Clicked" />
+            </Grid>
         </Frame>
     </pages:PopupPage.Content>
 </pages:PopupPage>

@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:vm="clr-namespace:EducUp.ViewModel"
-             x:Class="EducUp.View.EventListPage">
+             x:Class="EducUp.View.EventListPage"
+             x:Name="Page">
     <ContentPage.BindingContext>
         <vm:EventListPageViewModel x:Name="Vm" />
     </ContentPage.BindingContext>
@@ -53,7 +54,16 @@
                 </ListView.ItemTemplate>
                 <ListView.FooterTemplate>
                     <DataTemplate>
-                        <Button x:Name="LoadMoretButton" Grid.Row="2" HeightRequest="60" Text="Carica altri eventi..." BackgroundColor="White" Clicked="LoadMoretButton_Clicked" />
+                        <StackLayout>
+                            <Button x:Name="LoadMoretButton" HeightRequest="60" IsVisible="True" Text="Carica altri eventi..." BackgroundColor="White" Clicked="LoadMoretButton_Clicked" >
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference EventListView}, Path=BindingContext.LoadMoreBusy}" Value="True" >
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <ActivityIndicator Color="{StaticResource MainColor}" IsRunning="{Binding Source={x:Reference EventListView}, Path=BindingContext.LoadMoreBusy}" IsVisible="{Binding Source={x:Reference EventListView}, Path=BindingContext.LoadMoreBusy}" />
+                        </StackLayout>
                     </DataTemplate>
                 </ListView.FooterTemplate>
                 <ListView.Triggers>
@@ -74,7 +84,7 @@
             <Button x:Name="AddEventButton" 
                     Style="{StaticResource AddButtonStyle}"
                     IsVisible="{Binding AddButtonVisible}"
-                    Text="G" 
+                    Text="{x:StaticResource add}" 
                     Clicked="AddEventButton_Clicked"/>
         </AbsoluteLayout>
     </ContentPage.Content>

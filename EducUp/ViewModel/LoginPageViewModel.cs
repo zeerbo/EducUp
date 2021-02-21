@@ -37,19 +37,21 @@ namespace EducUp.ViewModel
 
         public async Task<bool> LoginAsync(string email, string password)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-                return false;
+            bool result = false;
 
-            bool result = await App.LoginUserAync(email, password);
-
-            if (result)
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
             {
-                App.SaveCredentials(email, password);
+                result = await App.LoginUserAync(email, password);
 
-                User user = await App.DataService.GetUserAsync(email);
-                if(user != null)
+                if (result)
                 {
-                    App.SaveAdminProfile(user.IsAdmin);
+                    App.SaveCredentials(email, password);
+
+                    User user = await App.DataService.GetUserAsync(email);
+                    if (user != null)
+                    {
+                        App.SaveAdminProfile(user.IsAdmin);
+                    }
                 }
             }
 

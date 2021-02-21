@@ -33,7 +33,6 @@ namespace EducUp.View
             else
             {
                 await DisplayAlert("Utente non trovato!", "Verificare lo stato della connessione", "OK");
-                await Navigation.PopModalAsync();
             }
         }
 

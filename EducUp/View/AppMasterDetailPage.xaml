@@ -12,7 +12,7 @@
     <MasterDetailPage.Detail>
         <NavigationPage>
             <x:Arguments>
-                <pages:StepPage Title="I miei passi"/>
+                <pages:HomeTabbedPage Title="I miei passi"/>
             </x:Arguments>
         </NavigationPage>
     </MasterDetailPage.Detail>

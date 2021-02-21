@@ -1,12 +1,15 @@
-﻿using EducUp.Enumerations;
+﻿using EducUp.Common;
+using EducUp.Enumerations;
 using EducUp.Model;
 using EducUp.ViewModel.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Dynamic;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace EducUp.ViewModel
 {
@@ -14,68 +17,69 @@ namespace EducUp.ViewModel
     {
         #region Properties
 
-        private Event _evento;
-        public Event Evento
+        private ObservableCollection<User> _userFoundList;
+        public ObservableCollection<User> UserFoundList
         {
-            get => _evento;
+            get => _userFoundList;
             set
             {
-                _evento = value;
-                OnPropertyChanged(nameof(Evento));
+                _userFoundList = value;
+                OnPropertyChanged(nameof(UserFoundList));
             }
         }
+
+        private bool _activityIndicatorRunning;
+        public bool ActivityIndicatorRunning
+        {
+            get => _activityIndicatorRunning;
+            set
+            {
+                _activityIndicatorRunning = value;
+                OnPropertyChanged(nameof(ActivityIndicatorRunning));
+            }
+        }
+
+        public IPresenceNotificationService PresenceNotificationService { get; set; }
 
         #endregion
 
-        #region Methods
-
-        public async Task<AddParticipantResultEnum> AddParticipant(string username)
+        public AddParticipantsPopupPageViewModel()
         {
-            AddParticipantResultEnum result = AddParticipantResultEnum.Fail;
-
-            if (!string.IsNullOrEmpty(username))
-            {
-                username = username.Trim();
-                User user = await App.DataService.GetUserAsync(username);
-                
-                if (user != null)
-                {
-                    result = AddParticipantToEventUserList(username);
-                    if (result == AddParticipantResultEnum.Success)
-                    {
-                        bool resultPersistance = await App.DataService.UpdateEventAsync(Evento);
-                        result = resultPersistance ? AddParticipantResultEnum.Success : AddParticipantResultEnum.Fail;
-                    }
-                }
-                else
-                {
-                    result = AddParticipantResultEnum.UserNotExists;
-                }
-            }
-
-            return result;
+            PresenceNotificationService = DependencyService.Get<IPresenceNotificationService>();
         }
 
-        private AddParticipantResultEnum AddParticipantToEventUserList(string username)
+        #region Methods
+
+        public async Task SubscrivePresenceNotificationAsync()
         {
-            AddParticipantResultEnum result = AddParticipantResultEnum.Fail;
+            MessagingCenter.Subscribe<string>(this, "PRESENCE_ID_RECEIVED", SubscribeUserFoundCallback);
+            await PresenceNotificationService.SubscribeMessagesAsync();
+            ActivityIndicatorRunning = true;
+        }
 
-            if (Evento.UsersList == null)
-            {
-                Evento.UsersList = new List<string>();
-            }
+        public async Task UnsubscribePresenceNotificationAsync()
+        {
+            MessagingCenter.Unsubscribe<string>(this, "PRESENCE_ID_RECEIVED");
+            await PresenceNotificationService.UnsubscribePresenceNotificationAsync();
+            ActivityIndicatorRunning = false;
+        }
 
-            if (!Evento.UsersList.Contains(username))
+        private void SubscribeUserFoundCallback(string presenceId)
+        {
+            if (!string.IsNullOrEmpty(presenceId))
             {
-                Evento.UsersList.Add(username);
-                result = AddParticipantResultEnum.Success;
+                Task.Run(async () =>
+                {
+                    User user = await App.DataService.GetUserByPresenceIdAsync(presenceId);
+                    if (user != null)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            UserFoundList.Add(user);
+                        });
+                    }
+                }); 
             }
-            else
-            {
-                result = AddParticipantResultEnum.UserAlreadyAdded;
-            }
-
-            return result;
         }
 
         #endregion

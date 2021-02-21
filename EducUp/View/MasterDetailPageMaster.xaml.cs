@@ -35,9 +35,10 @@ namespace EducUp.View
             {
                 MenuItems = new ObservableCollection<MasterDetailPageMasterMenuItem>(new[]
                 {
-                    new MasterDetailPageMasterMenuItem { Title = "I miei passi", TargetType = typeof(StepPage) },
+                    new MasterDetailPageMasterMenuItem { Title = "I miei passi", TargetType = typeof(HomeTabbedPage) },
                     new MasterDetailPageMasterMenuItem { Title = "Eventi", TargetType = typeof(EventsListTabbedPage) },
-                    new MasterDetailPageMasterMenuItem { Title = "Il mio profilo", TargetType = typeof(ProfilePage) }
+                    new MasterDetailPageMasterMenuItem { Title = "Il mio profilo", TargetType = typeof(ProfilePage) },
+                    new MasterDetailPageMasterMenuItem { Title = "Notifica presenza", TargetType = typeof(PresenceNotificationPage) }
                 });
             }
         }

@@ -81,7 +81,9 @@ namespace EducUp.View
 
         private async void LoadMoretButton_Clicked(object sender, EventArgs e)
         {
+            Vm.LoadMoreBusy = true;
             await Vm.LoadMoreEvents(PageMode);
+            Vm.LoadMoreBusy = false;
         }
 
         private async void EventListView_ItemTapped(object sender, ItemTappedEventArgs e)

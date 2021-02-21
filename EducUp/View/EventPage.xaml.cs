@@ -42,10 +42,10 @@ namespace EducUp.View
 
         private async void ParticipantsButton_Clicked(object sender, EventArgs e)
         {
-            AddParticipantsPopupPage addParticipantsPopupPage = new AddParticipantsPopupPage(Vm.Evento);
-            if (addParticipantsPopupPage != null)
+            UserListPage userListPage = new UserListPage(Vm.Evento);
+            if (userListPage != null)
             {
-                await Navigation.PushPopupAsync(addParticipantsPopupPage);
+                await Navigation.PushModalAsync(userListPage);
             }
         }
 
