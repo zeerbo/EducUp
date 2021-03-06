@@ -16,5 +16,11 @@ namespace EducUp.View
         {
             InitializeComponent();
         }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await Vm.SetData();
+        }
     }
 }

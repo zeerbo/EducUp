@@ -2,23 +2,28 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:renders="clr-namespace:EducUp.Renders"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:renders="clr-namespace:EducUp.Renders" 
+             xmlns:vm="clr-namespace:EducUp.ViewModel"
              mc:Ignorable="d"
              x:Class="EducUp.View.StepPage">
+    <ContentPage.BindingContext>
+        <vm:StepPageViewModel x:Name="Vm" />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <renders:CircularProgressBar Total="60" 
-                                         Progress="20"
+            <renders:CircularProgressBar Total="{Binding TotalSteps}" 
+                                         Progress="{Binding CurrentSteps}"
                                          AvailableStrokeColor="{StaticResource MainColor}" 
                                          ProgressStrokeColor="{StaticResource BackgroundColor}"
                                          WidthRequest="300"
                                          HeightRequest="300"
                                          StrokeWidth="15"
                                          InnerSpaceWidth="5"
-                                         Text="20/60"
+                                         Text="{Binding StepsText}"
                                          TextSize="200"
                                          TextMargin="5"/>
-            <Label Text="Passi" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+            <Label Text="{Binding Message}" FontSize="Large" HorizontalTextAlignment="Center" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

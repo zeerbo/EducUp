@@ -34,6 +34,7 @@ namespace EducUp.Common
         Task<ObservableCollection<Event>> GetNextPastEventListPageAsync(Event evento);
         Task<ObservableCollection<Event>> GetEventListByParticipantUsername(string username);
         Task<ObservableCollection<Event>> GetNextEventListByParticipantUsername(string username, Event evento);
+        Task<List<Event>> GetUserEventByDateRange(string username, DateTime startDate, DateTime endDate);
 
         #endregion
     }

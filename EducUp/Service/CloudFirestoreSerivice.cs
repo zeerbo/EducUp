@@ -499,6 +499,38 @@ namespace EducUp.Service
             return result;
         }
 
+        public async Task<List<Event>> GetUserEventByDateRange(string username, DateTime startDate, DateTime endDate)
+        {
+            List<Event> result = new List<Event>();
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                try
+                {
+                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                                                                            .WhereArrayContains(nameof(Event.UsersList), username)
+                                                                            .WhereGreaterThanOrEqualsTo(nameof(Event.StartDateTime), startDate)
+                                                                            .WhereLessThanOrEqualsTo(nameof(Event.StartDateTime), endDate)
+                                                                            .GetDocumentsAsync();
+                    foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                    {
+                        if (documentSnapshot.Exists)
+                        {
+                            Event newEvent = documentSnapshot.ToObject<Event>();
+                            result.Add(newEvent);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    result = null;
+                    App.LogException(e);
+                } 
+            }
+
+            return result;
+        }
+
         #endregion
     }
 }
