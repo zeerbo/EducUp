@@ -71,6 +71,11 @@ namespace EducUp.Service
             return result;
         }
 
+        public async Task SendChangePasswordEmailAsync(string email)
+        {
+            await _firebaseAuth.SendPasswordResetEmailAsync(email);
+        }
+
         #endregion
     }
 }

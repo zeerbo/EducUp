@@ -28,6 +28,7 @@
         <x:String x:Key="like">L</x:String>
         <x:String x:Key="group_add">M</x:String>
         <x:String x:Key="user_add">N</x:String>
+        <x:String x:Key="qr_code">O</x:String>
         
         <!--#endregion-->
 

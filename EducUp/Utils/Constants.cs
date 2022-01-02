@@ -16,5 +16,7 @@ namespace EducUp.Utils
 
         public const string NEW_EVENT = "NewEvent";
         public const string MODIFY_EVENT = "ModifyEvent";
+
+        public const string ENTITY_PARTICIPANTS = "Participants";
     }
 }

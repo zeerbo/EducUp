@@ -19,9 +19,9 @@
                     <RowDefinition Height="50" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0" Text="{Binding Evento.Titolo}" TextColor="Black" FontAttributes="Bold" FontSize="20" LineBreakMode="TailTruncation" MaxLines="2" Margin="0,0,0,5" />
+                <Label Grid.Column="0" Text="{Binding Evento.Titolo}" TextColor="Black" FontAttributes="Bold" FontSize="20" LineBreakMode="TailTruncation" MaxLines="2" Margin="5,0,0,5" />
                 <Label Grid.Row="1" Text="{Binding Evento.Description}" TextColor="Black" FontAttributes="Italic" />
-                <Label Grid.Row="2" TextColor="Black" >
+                <Label Grid.Row="2" TextColor="Black" Margin="5,0,0,5">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Partecipanti: " />
@@ -58,7 +58,7 @@
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
-                                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding Email}" TextColor="Gray" />
+                                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding Email}" FontSize="12" TextColor="Gray" />
 
                                     <Button x:Name="DeleteButton" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" IsVisible="{Binding Source={x:Reference UsersListView}, Path=BindingContext.ModifyMode}" Text="I" FontFamily="{StaticResource AppFontIcons}" TextColor="Red" BackgroundColor="White" Command="{Binding Source={x:Reference UsersListView}, Path=BindingContext.DeleteUserCommand}" CommandParameter="{Binding .}"/>
                                 </Grid>
@@ -70,18 +70,22 @@
                 <Frame Grid.Row="5" BackgroundColor="White" IsVisible="{Binding ModifyFrameVisible}" CornerRadius="20" HasShadow="True" Padding="0" Margin="5">
                     <Grid ColumnSpacing="0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.3333*" />
+                            <ColumnDefinition Width="0.25*" />
                             <ColumnDefinition Width="1" />
-                            <ColumnDefinition Width="0.3333*" />
+                            <ColumnDefinition Width="0.25*" />
                             <ColumnDefinition Width="1" />
-                            <ColumnDefinition Width="0.3333*" />
+                            <ColumnDefinition Width="0.25*" />
+                            <ColumnDefinition Width="1" />
+                            <ColumnDefinition Width="0.25*" />
                         </Grid.ColumnDefinitions>
 
-                        <Button x:Name="ModifyButton" Grid.Column="0" IsEnabled="{Binding IsModifyButtonEnabled}" Text="{x:StaticResource pencil}" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
+                        <Button x:Name="ModifyButton" Grid.Column="0" Text="{x:StaticResource pencil}" FontFamily="{StaticResource AppFontIcons}" FontSize="12" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
                         <BoxView Grid.Column="1" Style="{StaticResource SeparatorBoxViewStyle}"/>
-                        <Button x:Name="AddGroupParticipantsButton" Grid.Column="2" IsEnabled="{Binding IsAddParticipantsButtonEnabled}" Text="{x:StaticResource group_add}" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="AddGroupParticipantsButton_Clicked" />
+                        <Button x:Name="AddGroupParticipantsButton" Grid.Column="2" Text="{x:StaticResource group_add}" FontFamily="{StaticResource AppFontIcons}" FontSize="12" TextColor="Black" BackgroundColor="White" Clicked="AddGroupParticipantsButton_Clicked" />
                         <BoxView Grid.Column="3" Style="{StaticResource SeparatorBoxViewStyle}"/>
-                        <Button x:Name="AddParticipantButton" Grid.Column="4" IsEnabled="{Binding IsDeleteButtonEnabled}" Text="{x:StaticResource user_add}" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="AddParticipantButton_Clicked" />
+                        <Button x:Name="AddParticipantButton" Grid.Column="4" Text="{x:StaticResource user_add}" FontFamily="{StaticResource AppFontIcons}" FontSize="12" TextColor="Black" BackgroundColor="White" Clicked="AddParticipantButton_Clicked" />
+                        <BoxView Grid.Column="5" Style="{StaticResource SeparatorBoxViewStyle}"/>
+                        <Button x:Name="QRCodeButton" Grid.Column="6" Text="{x:StaticResource qr_code}" FontFamily="{StaticResource AppFontIcons}" FontSize="12" TextColor="Black" BackgroundColor="White" Clicked="QRCodeButton_Clicked" />
                     </Grid>
                 </Frame>
 

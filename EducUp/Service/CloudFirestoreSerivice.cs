@@ -1,5 +1,6 @@
 ﻿using EducUp.Common;
 using EducUp.Model;
+using EducUp.Utils;
 using Plugin.CloudFirestore;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace EducUp.Service
 
                 try
                 {
-                    await _firestore.GetCollection(nameof(User)).GetDocument(user.Email).SetDataAsync(user).ConfigureAwait(false);
+                    await _firestore.Collection(nameof(User)).Document(user.Email).SetAsync<User>(user).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -70,7 +71,7 @@ namespace EducUp.Service
 
                 try
                 {
-                    await _firestore.GetCollection(nameof(User)).GetDocument(user.Email).UpdateDataAsync(user).ConfigureAwait(false);
+                    await _firestore.Collection(nameof(User)).Document(user.Email).UpdateAsync<User>(user).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -92,7 +93,7 @@ namespace EducUp.Service
 
                 try
                 {
-                    await _firestore.GetCollection(nameof(User)).GetDocument(user.Email).DeleteDocumentAsync().ConfigureAwait(false);
+                    await _firestore.Collection(nameof(User)).Document(user.Email).DeleteAsync().ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -112,7 +113,7 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IDocumentSnapshot documentSnapshot = await _firestore.GetCollection(nameof(User)).GetDocument(email).GetDocumentAsync();
+                    IDocumentSnapshot documentSnapshot = await _firestore.Collection(nameof(User)).Document(email).GetAsync();
                     if (documentSnapshot.Exists)
                     {
                         result = documentSnapshot.ToObject<User>();
@@ -136,7 +137,7 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(User)).WhereEqualsTo(nameof(User.PresenceId), presenceId).GetDocumentsAsync();
+                    IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(User)).WhereEqualsTo(nameof(User.PresenceId), presenceId).GetAsync();
                     IDocumentSnapshot documentSnapshot = querySnapshot.Documents.FirstOrDefault();
                     if (documentSnapshot.Exists)
                     {
@@ -159,7 +160,7 @@ namespace EducUp.Service
 
             try
             {
-                IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(User)).GetDocumentsAsync();
+                IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(User)).GetAsync();
                 foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                 {
                     if (documentSnapshot.Exists)
@@ -186,7 +187,7 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(User)).GetDocumentsAsync();
+                    IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(User)).GetAsync();
                     foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                     {
                         if (documentSnapshot.Exists)
@@ -224,7 +225,7 @@ namespace EducUp.Service
 
                 try
                 {
-                    await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).SetDataAsync(evento).ConfigureAwait(false);
+                    await _firestore.Collection(nameof(Event)).Document(evento.Id).SetAsync(evento).ConfigureAwait(false);
                 }
                 catch(Exception e)
                 {
@@ -246,7 +247,7 @@ namespace EducUp.Service
 
                 try
                 {
-                    await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).UpdateDataAsync(evento).ConfigureAwait(false);
+                    await _firestore.Collection(nameof(Event)).Document(evento.Id).UpdateAsync(evento).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -268,7 +269,7 @@ namespace EducUp.Service
 
                 try
                 {
-                    await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).DeleteDocumentAsync().ConfigureAwait(false);
+                    await _firestore.Collection(nameof(Event)).Document(evento.Id).DeleteAsync().ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -288,7 +289,7 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IDocumentSnapshot documentSnapshot = await _firestore.GetCollection(nameof(Event)).GetDocument(id).GetDocumentAsync();
+                    IDocumentSnapshot documentSnapshot = await _firestore.Collection(nameof(Event)).Document(id).GetAsync();
                     if (documentSnapshot.Exists)
                     {
                         result = documentSnapshot.ToObject<Event>();
@@ -310,11 +311,11 @@ namespace EducUp.Service
 
             try
             {
-                IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event))
                                                                 .WhereGreaterThanOrEqualsTo(nameof(Event.StartDateTime), DateTime.Now)
                                                                 .OrderBy(nameof(Event.StartDateTime))
                                                                 .LimitTo(20)
-                                                                .GetDocumentsAsync();
+                                                                .GetAsync();
                 foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                 {
                     if (documentSnapshot.Exists)
@@ -341,15 +342,15 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IDocumentSnapshot documentSnapshotLast = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetDocumentAsync();
+                    IDocumentSnapshot documentSnapshotLast = await _firestore.Collection(nameof(Event)).Document(evento.Id).GetAsync();
                     if (documentSnapshotLast != null)
                     {
-                        IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                        IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event))
                                                                         .WhereGreaterThanOrEqualsTo(nameof(Event.StartDateTime), DateTime.Now)
                                                                         .OrderBy(nameof(Event.StartDateTime))
                                                                         .StartAfter(documentSnapshotLast)
                                                                         .LimitTo(20)
-                                                                        .GetDocumentsAsync();
+                                                                        .GetAsync();
                         foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                         {
                             if (documentSnapshot.Exists)
@@ -376,11 +377,11 @@ namespace EducUp.Service
 
             try
             {
-                IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event))
                                                                 .WhereLessThan(nameof(Event.StartDateTime), DateTime.Now)
                                                                 .OrderBy(nameof(Event.StartDateTime), true)
                                                                 .LimitTo(20)
-                                                                .GetDocumentsAsync();
+                                                                .GetAsync();
                 foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                 {
                     if (documentSnapshot.Exists)
@@ -405,15 +406,15 @@ namespace EducUp.Service
 
             try
             {
-                IDocumentSnapshot documentSnapshotLast = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetDocumentAsync();
+                IDocumentSnapshot documentSnapshotLast = await _firestore.Collection(nameof(Event)).Document(evento.Id).GetAsync();
                 if (documentSnapshotLast != null)
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                    IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event))
                                                                             .WhereLessThan(nameof(Event.StartDateTime), DateTime.Now)
                                                                             .OrderBy(nameof(Event.StartDateTime), true)
                                                                             .StartAfter(documentSnapshotLast)
                                                                             .LimitTo(20)
-                                                                            .GetDocumentsAsync();
+                                                                            .GetAsync();
                     foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                     {
                         if (documentSnapshot.Exists)
@@ -441,11 +442,11 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                    IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event))
                                                                             .WhereArrayContains(nameof(Event.UsersList), username)
                                                                             .OrderBy(nameof(Event.StartDateTime), true)
                                                                             .LimitTo(20)
-                                                                            .GetDocumentsAsync();
+                                                                            .GetAsync();
                     foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                     {
                         if (documentSnapshot.Exists)
@@ -471,15 +472,15 @@ namespace EducUp.Service
 
             try
             {
-                IDocumentSnapshot documentSnapshotLast = await _firestore.GetCollection(nameof(Event)).GetDocument(evento.Id).GetDocumentAsync();
+                IDocumentSnapshot documentSnapshotLast = await _firestore.Collection(nameof(Event)).Document(evento.Id).GetAsync();
                 if (documentSnapshotLast != null)
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                    IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event))
                                                                            .WhereArrayContains(nameof(Event.UsersList), username)
                                                                            .OrderBy(nameof(Event.StartDateTime), true)
                                                                            .StartAfter(documentSnapshotLast)
                                                                            .LimitTo(20)
-                                                                           .GetDocumentsAsync();
+                                                                           .GetAsync();
                     foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                     {
                         if (documentSnapshot.Exists)
@@ -507,11 +508,11 @@ namespace EducUp.Service
             {
                 try
                 {
-                    IQuerySnapshot querySnapshot = await _firestore.GetCollection(nameof(Event))
+                    IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event))
                                                                             .WhereArrayContains(nameof(Event.UsersList), username)
                                                                             .WhereGreaterThanOrEqualsTo(nameof(Event.StartDateTime), startDate)
                                                                             .WhereLessThanOrEqualsTo(nameof(Event.StartDateTime), endDate)
-                                                                            .GetDocumentsAsync();
+                                                                            .GetAsync();
                     foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
                     {
                         if (documentSnapshot.Exists)
@@ -528,6 +529,70 @@ namespace EducUp.Service
                 } 
             }
 
+            return result;
+        }
+
+        #endregion
+
+
+        #region Participants
+
+        public async Task<List<string>> GetParticipantsByEvent(string eventiId)
+        {
+            List<string> result = new List<string>();
+
+            try
+            {
+                IQuerySnapshot querySnapshot = await _firestore.Collection(nameof(Event)).Document(eventiId).Collection(Constants.ENTITY_PARTICIPANTS).GetAsync();
+                foreach (IDocumentSnapshot documentSnapshot in querySnapshot.Documents)
+                {
+                    if (documentSnapshot.Exists)
+                    {
+                        result.Add(documentSnapshot.ToString());
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                result = null;
+                App.LogException(e);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> AddParticipantByEvent(string eventiId, string userId)
+        {
+            bool result = false;
+            try
+            {
+                IDocumentReference documentReference = await _firestore.Collection(nameof(Event)).Document(eventiId).Collection(Constants.ENTITY_PARTICIPANTS).AddAsync<string>(userId);
+                if(documentReference != null)
+                {
+                    result = true;
+                }
+            }
+            catch (Exception e)
+            {
+                result = false;
+                App.LogException(e);
+            }
+            return result;
+        }
+
+        public async Task<bool> RemoveParticipantParticipantByEvent(string eventiId, string userId)
+        {
+            bool result = false;
+            try
+            {
+                await _firestore.Collection(nameof(Event)).Document(eventiId).Collection(Constants.ENTITY_PARTICIPANTS).Document(userId).DeleteAsync();
+                result = true;
+            }
+            catch (Exception e)
+            {
+                result = false;
+                App.LogException(e);
+            }
             return result;
         }
 

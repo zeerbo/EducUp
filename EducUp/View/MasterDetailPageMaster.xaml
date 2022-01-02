@@ -13,6 +13,9 @@
     
     <ContentPage.Content>
         <StackLayout>
+            <Frame BackgroundColor="{StaticResource MainColor}" HeightRequest="90">
+                <Label Text="EducUp" TextColor="{StaticResource BackgroundColor}" FontAttributes="Bold" FontSize="Large" Margin="2,0,0,0" VerticalTextAlignment="Center" />
+            </Frame>
             <ListView x:Name="MenuItemsListView"
                       SeparatorVisibility="None"
                       HasUnevenRows="False"
@@ -26,8 +29,8 @@
                                     <ColumnDefinition Width="50" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Style="{StaticResource LabelIconStyle}" Text="{Binding TargetType, Converter={StaticResource MasterPageConverter}}" TextColor="Black" FontSize="20"  />
-                                <Label Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Title}" TextColor="Black" FontSize="20" />
+                                <Label Grid.Column="0" Style="{StaticResource LabelIconStyle}" Text="{Binding TargetType, Converter={StaticResource MasterPageConverter}}" TextColor="Black" FontSize="Default" />
+                                <Label Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Title}" TextColor="Black" FontSize="Default" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

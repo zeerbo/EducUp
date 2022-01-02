@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms" 
+             xmlns:vm="clr-namespace:EducUp.ViewModel"              
+             xmlns:zxingcommon="clr-namespace:ZXing.Common;assembly=zxing.portable"
+             x:Class="EducUp.View.UserQRCodePage">
+    <ContentPage.BindingContext>
+        <vm:UserQRCodePageViewModel x:Name="Vm"/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid Margin="2" BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            <zxing:ZXingBarcodeImageView Grid.Row="0" BarcodeValue="{Binding UserPresenceId}">
+                <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    <zxingcommon:EncodingOptions Height="500" Width="500" />
+                </zxing:ZXingBarcodeImageView.BarcodeOptions>
+            </zxing:ZXingBarcodeImageView>
+            <Label Grid.Row="1" HorizontalTextAlignment="Center" Text="Mostra il QRCode per registrarti all'evento e procedere con i passi" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage> 

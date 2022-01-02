@@ -81,7 +81,11 @@ namespace EducUp.ViewModel
         {
             if(Evento != null && UsersList == null)
             {
-                UsersList = await App.DataService.GetUsersListByUsernameListAsync(Evento.UsersList);
+                List<string> participants = Evento.UsersList;
+                if (participants != null && participants.Count > 0)
+                {
+                    UsersList = await App.DataService.GetUsersListByUsernameListAsync(participants); 
+                }
             }
         }
         

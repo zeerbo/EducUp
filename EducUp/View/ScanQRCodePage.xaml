@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms" 
+             xmlns:vm="clr-namespace:EducUp.ViewModel"
+             x:Class="EducUp.View.ScanQRCodePage"
+             ControlTemplate="{StaticResource AppPageTemplate}">
+    <ContentPage.BindingContext>
+        <vm:ScanQRCodePageViewModel x:Name="Vm" />
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid Padding="2" BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" HorizontalTextAlignment="Center"  FontSize="12" Margin="5">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Scansiona il qrcode degli utenti per aggiungerli all'evento: "/>
+                        <Span Text="{Binding Evento.Titolo}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <zxing:ZXingScannerView x:Name="ScannerView" Margin="5" Grid.Row="1" OnScanResult="ScannerView_OnScanResult" IsVisible="{Binding ScannerVisible}"  IsScanning="True" IsEnabled="{Binding ScannerVisible}" />
+            <Frame Margin="5" Grid.Row="1" IsVisible="{Binding MessageVisible}" HasShadow="False" BorderColor="{Binding MessageColor}" >
+                <StackLayout Orientation="Vertical" >
+                    <Label Text="{Binding Message}" TextColor="Black" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" />
+                    <Button x:Name="ContinueButton" Text="Continua" Style="{StaticResource ButtonStyle}" Clicked="ContinueButton_Clicked" VerticalOptions="EndAndExpand"/>
+                </StackLayout>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

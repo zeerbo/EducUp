@@ -51,6 +51,7 @@ namespace EducUp.ViewModel
                     if (user != null)
                     {
                         App.SaveAdminProfile(user.IsAdmin);
+                        App.SaveUserPresenceId(user.PresenceId);
                     }
                 }
             }

@@ -60,11 +60,11 @@
                         <ColumnDefinition Width="0.3333*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="ModifyButton" Grid.Column="0" IsEnabled="{Binding IsModifyButtonEnabled}" Text="{x:StaticResource pencil}" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
+                    <Button x:Name="ModifyButton" Grid.Column="0" IsEnabled="{Binding IsModifyButtonEnabled}" Text="{x:StaticResource pencil}" FontFamily="{StaticResource AppFontIcons}" FontSize="12" TextColor="Black" BackgroundColor="White" Clicked="ModifyButton_Clicked" />
                     <BoxView Grid.Column="1" Style="{StaticResource SeparatorBoxViewStyle}"/>
-                    <Button x:Name="ParticipantsButton" Grid.Column="2" IsEnabled="{Binding IsAddParticipantsButtonEnabled}" Text="{x:StaticResource group_meeting}" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="ParticipantsButton_Clicked" />
+                    <Button x:Name="ParticipantsButton" Grid.Column="2" IsEnabled="{Binding IsAddParticipantsButtonEnabled}" Text="{x:StaticResource group_meeting}" FontFamily="{StaticResource AppFontIcons}" FontSize="12" TextColor="Black" BackgroundColor="White" Clicked="ParticipantsButton_Clicked" />
                     <BoxView Grid.Column="3" Style="{StaticResource SeparatorBoxViewStyle}"/>
-                    <Button x:Name="DeleteButton" Grid.Column="4" IsEnabled="{Binding IsDeleteButtonEnabled}" Text="{x:StaticResource trash}" FontFamily="{StaticResource AppFontIcons}" TextColor="Black" BackgroundColor="White" Clicked="DeleteButton_Clicked" />
+                    <Button x:Name="DeleteButton" Grid.Column="4" IsEnabled="{Binding IsDeleteButtonEnabled}" Text="{x:StaticResource trash}" FontFamily="{StaticResource AppFontIcons}" FontSize="12" TextColor="Black" BackgroundColor="White" Clicked="DeleteButton_Clicked" />
                 </Grid>
             </Frame>
         </AbsoluteLayout>

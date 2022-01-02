@@ -38,7 +38,7 @@ namespace EducUp.View
                     new MasterDetailPageMasterMenuItem { Title = "I miei passi", TargetType = typeof(HomeTabbedPage) },
                     new MasterDetailPageMasterMenuItem { Title = "Eventi", TargetType = typeof(EventsListTabbedPage) },
                     new MasterDetailPageMasterMenuItem { Title = "Il mio profilo", TargetType = typeof(ProfilePage) },
-                    new MasterDetailPageMasterMenuItem { Title = "Notifica presenza", TargetType = typeof(PresenceNotificationPage) }
+                    new MasterDetailPageMasterMenuItem { Title = "Partecipa evento", TargetType = typeof(UserQRCodePage) }
                 });
             }
         }

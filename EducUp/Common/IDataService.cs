@@ -37,5 +37,14 @@ namespace EducUp.Common
         Task<List<Event>> GetUserEventByDateRange(string username, DateTime startDate, DateTime endDate);
 
         #endregion
+
+
+        #region Participants
+
+        Task<List<string>> GetParticipantsByEvent(string eventiId);
+        Task<bool> AddParticipantByEvent(string eventiId, string userId);
+        Task<bool> RemoveParticipantParticipantByEvent(string eventiId, string userId);
+
+        #endregion
     }
 }

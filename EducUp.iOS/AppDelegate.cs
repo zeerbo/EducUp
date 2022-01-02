@@ -29,7 +29,9 @@ namespace EducUp.iOS
 
             // Setup Firebase Cloud Firestore
             Firebase.Core.App.Configure();
-
+            
+            // Setup ZXing
+            ZXing.Net.Mobile.Forms.iOS.Platform.Init();
 
             return base.FinishedLaunching(app, options);
         }

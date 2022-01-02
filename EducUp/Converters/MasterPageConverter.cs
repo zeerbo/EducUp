@@ -26,7 +26,7 @@ namespace EducUp.Converters
                 {
                     result = "F";
                 }
-                else if (type.Equals(typeof(PresenceNotificationPage)))
+                else if (type.Equals(typeof(UserQRCodePage)))
                 {
                     result = "L";
                 }

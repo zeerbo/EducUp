@@ -81,6 +81,11 @@ namespace EducUp.View
             ManageResultAddParticipant(result);
         }
 
+        private async void QRCodeButton_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushModalAsync(new ScanQRCodePage(Vm.Evento));
+        }
+
         #endregion
 
 
