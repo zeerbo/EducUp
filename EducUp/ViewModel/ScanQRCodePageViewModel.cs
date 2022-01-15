@@ -112,7 +112,7 @@ namespace EducUp.ViewModel
                     }
                     else
                     {
-                        Message = $"Utente {user.Name} {user.Surname} è partecipa già all'evento";
+                        Message = $"Utente {user.Name} {user.Surname} partecipa già all'evento";
                         MessageColor = Color.Green;
                     }
                 }

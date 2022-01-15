@@ -44,11 +44,14 @@ namespace EducUp.View
 
         private async void ScannerView_OnScanResult(ZXing.Result result)
         {
+            ScannerView.OnScanResult -= ScannerView_OnScanResult;
+            Vm.ScannerVisible = false;
             await Vm.AddParticipantByQrCodeAsync(result.Text);
         }
 
         private void ContinueButton_Clicked(object sender, EventArgs e)
         {
+            ScannerView.OnScanResult += ScannerView_OnScanResult;
             Vm.ScannerVisible = true;
             Vm.MessageVisible = false;
         }
